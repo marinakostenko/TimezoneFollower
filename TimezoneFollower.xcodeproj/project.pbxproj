@@ -14,6 +14,10 @@
 		340F6FBA284598DE009A2A6D /* TimezoneFollowerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340F6FB9284598DE009A2A6D /* TimezoneFollowerTests.swift */; };
 		340F6FC4284598DE009A2A6D /* TimezoneFollowerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340F6FC3284598DE009A2A6D /* TimezoneFollowerUITests.swift */; };
 		340F6FC6284598DE009A2A6D /* TimezoneFollowerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340F6FC5284598DE009A2A6D /* TimezoneFollowerUITestsLaunchTests.swift */; };
+		340F6FD92846DBEE009A2A6D /* CityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340F6FD82846DBEE009A2A6D /* CityView.swift */; };
+		340F6FE22846E358009A2A6D /* citiesData.json in Resources */ = {isa = PBXBuildFile; fileRef = 340F6FE12846E358009A2A6D /* citiesData.json */; };
+		340F6FE42846E69A009A2A6D /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340F6FE32846E69A009A2A6D /* City.swift */; };
+		340F6FE62846E76B009A2A6D /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340F6FE52846E76B009A2A6D /* ModelData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +48,10 @@
 		340F6FBF284598DE009A2A6D /* TimezoneFollowerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimezoneFollowerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		340F6FC3284598DE009A2A6D /* TimezoneFollowerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimezoneFollowerUITests.swift; sourceTree = "<group>"; };
 		340F6FC5284598DE009A2A6D /* TimezoneFollowerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimezoneFollowerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		340F6FD82846DBEE009A2A6D /* CityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityView.swift; sourceTree = "<group>"; };
+		340F6FE12846E358009A2A6D /* citiesData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = citiesData.json; sourceTree = "<group>"; };
+		340F6FE32846E69A009A2A6D /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
+		340F6FE52846E76B009A2A6D /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +102,10 @@
 		340F6FA7284598DC009A2A6D /* TimezoneFollower */ = {
 			isa = PBXGroup;
 			children = (
+				340F6FE02846E301009A2A6D /* Resources */,
+				340F6FDE2846E2CE009A2A6D /* Model */,
 				340F6FA8284598DC009A2A6D /* TimezoneFollowerApp.swift */,
-				340F6FAA284598DC009A2A6D /* ContentView.swift */,
+				340F6FDD2846E2B5009A2A6D /* Views */,
 				340F6FAC284598DD009A2A6D /* Assets.xcassets */,
 				340F6FAE284598DD009A2A6D /* Preview Content */,
 			);
@@ -125,6 +135,32 @@
 				340F6FC5284598DE009A2A6D /* TimezoneFollowerUITestsLaunchTests.swift */,
 			);
 			path = TimezoneFollowerUITests;
+			sourceTree = "<group>";
+		};
+		340F6FDD2846E2B5009A2A6D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				340F6FAA284598DC009A2A6D /* ContentView.swift */,
+				340F6FD82846DBEE009A2A6D /* CityView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		340F6FDE2846E2CE009A2A6D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				340F6FE32846E69A009A2A6D /* City.swift */,
+				340F6FE52846E76B009A2A6D /* ModelData.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		340F6FE02846E301009A2A6D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				340F6FE12846E358009A2A6D /* citiesData.json */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,6 +269,7 @@
 			files = (
 				340F6FB0284598DD009A2A6D /* Preview Assets.xcassets in Resources */,
 				340F6FAD284598DD009A2A6D /* Assets.xcassets in Resources */,
+				340F6FE22846E358009A2A6D /* citiesData.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,7 +294,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				340F6FE42846E69A009A2A6D /* City.swift in Sources */,
 				340F6FAB284598DC009A2A6D /* ContentView.swift in Sources */,
+				340F6FE62846E76B009A2A6D /* ModelData.swift in Sources */,
+				340F6FD92846DBEE009A2A6D /* CityView.swift in Sources */,
 				340F6FA9284598DC009A2A6D /* TimezoneFollowerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

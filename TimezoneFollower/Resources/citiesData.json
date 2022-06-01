@@ -1,0 +1,26 @@
+[
+    {
+        "name": "vancouver",
+        "country": "canada",
+        "timestamp": 1653497599,
+        "imageName": "vancouver"
+    },
+    {
+        "name": "kyiv",
+        "country": "ukraine",
+        "timestamp": 1654041937,
+        "imageName": "kyiv"
+    },
+    {
+        "name": "prague",
+        "country": "czech",
+        "timestamp": 1654041937,
+        "imageName": "prague"
+    },
+    {
+        "name": "new york",
+        "country": "usa",
+        "timestamp": 1654041937,
+        "imageName": "new_york"
+    },
+]
