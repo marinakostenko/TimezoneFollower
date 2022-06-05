@@ -4,11 +4,14 @@ struct CityView: View {
     var city: City
     
     var body: some View {
-        city.image
-            .resizable()
-            .frame(width: 155, height: 155)
-            .cornerRadius(5)
-            .padding()
+        Color.clear
+            .aspectRatio(1, contentMode: .fit)
+            .overlay(
+                city.image
+                    .resizable()
+                    .scaledToFill()
+                )
+            .clipShape(Rectangle())
     }
 }
 
