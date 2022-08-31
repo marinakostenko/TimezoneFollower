@@ -5,11 +5,11 @@ struct City: Hashable, Codable {
     var name: String
     var country: String
     var timestamp: Double
-    var weather: String
+    var temperature: String
     
-    private var imageName: String
+    //private var imageName: String
     var image: Image {
-        Image(imageName)
+        Image(name)
     }
     
     var time: String {
