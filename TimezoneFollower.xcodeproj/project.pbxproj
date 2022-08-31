@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		340DF0B928C0138200D64102 /* IPhoneScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340DF0B828C0138200D64102 /* IPhoneScene.swift */; };
+		340DF0BB28C0156A00D64102 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340DF0BA28C0156A00D64102 /* ProfileView.swift */; };
+		340DF0BD28C0158F00D64102 /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340DF0BC28C0158F00D64102 /* CalculatorView.swift */; };
 		340F6FA9284598DC009A2A6D /* TimezoneFollowerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340F6FA8284598DC009A2A6D /* TimezoneFollowerApp.swift */; };
 		340F6FAB284598DC009A2A6D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340F6FAA284598DC009A2A6D /* ContentView.swift */; };
 		340F6FAD284598DD009A2A6D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 340F6FAC284598DD009A2A6D /* Assets.xcassets */; };
@@ -39,6 +42,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		340DF0B828C0138200D64102 /* IPhoneScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPhoneScene.swift; sourceTree = "<group>"; };
+		340DF0BA28C0156A00D64102 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		340DF0BC28C0158F00D64102 /* CalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorView.swift; sourceTree = "<group>"; };
 		340F6FA5284598DC009A2A6D /* TimezoneFollower.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimezoneFollower.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		340F6FA8284598DC009A2A6D /* TimezoneFollowerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimezoneFollowerApp.swift; sourceTree = "<group>"; };
 		340F6FAA284598DC009A2A6D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -81,6 +87,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		340DF0B328BEF03100D64102 /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Configs;
+			sourceTree = "<group>";
+		};
 		340F6F9C284598DC009A2A6D = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +117,7 @@
 		340F6FA7284598DC009A2A6D /* TimezoneFollower */ = {
 			isa = PBXGroup;
 			children = (
+				340DF0B328BEF03100D64102 /* Configs */,
 				340F6FE02846E301009A2A6D /* Resources */,
 				340F6FDE2846E2CE009A2A6D /* Model */,
 				340F6FA8284598DC009A2A6D /* TimezoneFollowerApp.swift */,
@@ -145,6 +159,9 @@
 				340F6FAA284598DC009A2A6D /* ContentView.swift */,
 				340F6FD82846DBEE009A2A6D /* CityView.swift */,
 				340F6FE72847D642009A2A6D /* CityList.swift */,
+				340DF0B828C0138200D64102 /* IPhoneScene.swift */,
+				340DF0BA28C0156A00D64102 /* ProfileView.swift */,
+				340DF0BC28C0158F00D64102 /* CalculatorView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -297,11 +314,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				340DF0BB28C0156A00D64102 /* ProfileView.swift in Sources */,
+				340DF0B928C0138200D64102 /* IPhoneScene.swift in Sources */,
 				340F6FE42846E69A009A2A6D /* City.swift in Sources */,
 				340F6FAB284598DC009A2A6D /* ContentView.swift in Sources */,
 				340F6FE62846E76B009A2A6D /* ModelData.swift in Sources */,
 				340F6FD92846DBEE009A2A6D /* CityView.swift in Sources */,
 				340F6FE82847D642009A2A6D /* CityList.swift in Sources */,
+				340DF0BD28C0158F00D64102 /* CalculatorView.swift in Sources */,
 				340F6FA9284598DC009A2A6D /* TimezoneFollowerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -463,6 +483,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TimezoneFollower/Preview Content\"";
+				DEVELOPMENT_TEAM = XP622UCQGG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -491,6 +512,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TimezoneFollower/Preview Content\"";
+				DEVELOPMENT_TEAM = XP622UCQGG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
