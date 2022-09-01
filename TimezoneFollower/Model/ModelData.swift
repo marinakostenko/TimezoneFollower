@@ -1,6 +1,7 @@
 import Foundation
 
 var cities: [City] = load("citiesData");
+var user: [User] = load("userData");
 
 func load<T: Decodable>(_ filename: String) -> [T] {
     let data: Data

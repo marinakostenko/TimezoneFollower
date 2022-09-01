@@ -4,24 +4,24 @@
             "name": "vancouver",
             "country": "canada",
             "timestamp": 1653497599,
-            "temperature": "17 C"
+            "imageName": "vancouver",
         },
         {
             "name": "kyiv",
             "country": "ukraine",
             "timestamp": 1654041937,
-            "temperature": "30 C"
+            "imageName": "kyiv",
         },
         {
             "name": "prague",
             "country": "czech",
             "timestamp": 1654041937,
-            "temperature": "35 C"
+            "imageName": "prague",
         },
         {
             "name": "new york",
             "country": "usa",
             "timestamp": 1654041937,
-            "temperature": "23 C"
+            "imageName": "new_york",
         }
     ]
