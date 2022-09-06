@@ -27,3 +27,4 @@ struct City: Hashable, Codable {
         return strDate
     }
 }
+

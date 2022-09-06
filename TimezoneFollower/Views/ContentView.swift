@@ -1,25 +1,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var text = ""
+    
     var body: some View {
-        VStack (alignment: .leading){
-            HStack(){
-                Text("Clock and Weather")
-                    .font(.title)
-                    .foregroundColor(.gray)
-                Spacer()
-                Button {
-                    print("hello")
-                } label: {
-                    Label("Add clock", systemImage:"plus.circle")
-                        .labelStyle(.iconOnly)
-                        .foregroundColor(.yellow)
-                }
-                
-            }.padding()
-            
-            CityList()
+        NavigationView {
+            VStack (alignment: .leading){
+                CityList()
+                    .searchable(text: $text,
+                                placement: .navigationBarDrawer(displayMode: .always),
+                                prompt: "Search cities") {
+                        
+                        ForEach(cities, id:\.self) {city in
+                            Text(city.name).searchCompletion(city.name)
+                        }
+                    }
+            }
+            .navigationTitle("World Time")
         }
+        
         
     }
 }
