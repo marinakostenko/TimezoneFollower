@@ -16,11 +16,11 @@ struct ProfileView: View {
                     Text(user.location)
                 }.padding()
                 
-                Text(time, style: .date)
-                Text(time, style: .time)
+                Text(user.userDateTime(d: time))
                     .onReceive(clockTimer) { _ in
                         self.time = Date()
                     }
+                    .padding()
                 
                 
                 ContactsList()

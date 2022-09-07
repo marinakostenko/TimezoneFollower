@@ -3,4 +3,5 @@
     "name": "Marina",
     "location": "canada",
     "phoneNumber": "123456789",
+    "timeZone": "Canada/Pacific",
 }

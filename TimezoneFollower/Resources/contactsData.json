@@ -4,6 +4,7 @@
         "name": "Joe",
         "location": "US",
         "phoneNumber": "123456780",
+        "timeZone": "America/Los_Angeles",
     },
     
     {
@@ -11,6 +12,7 @@
         "name": "Jessica",
         "location": "Germany",
         "phoneNumber": "323456780",
+        "timeZone": "Europe/Berlin",
     },
     
     {
@@ -18,6 +20,7 @@
         "name": "Jack",
         "location": "UK",
         "phoneNumber": "323456780",
+        "timeZone": "Europe/London",
     },
     
 ]
