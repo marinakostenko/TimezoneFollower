@@ -15,7 +15,7 @@ struct IPhoneScene: Scene {
                         Label("Calculator", systemImage: "hourglass.circle")
                     })
                 
-                ProfileView()
+                ProfileView(user: user)
                     .tabItem({
                         Label("Profile", systemImage: "person.crop.circle")
                     })
