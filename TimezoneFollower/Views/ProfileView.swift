@@ -22,7 +22,7 @@ struct ProfileView: View {
                     .padding()
                 
                 
-                ContactsList()
+                ContactsList(users: contacts)
                 
             }
             .navigationTitle("Profile")

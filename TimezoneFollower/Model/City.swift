@@ -32,7 +32,7 @@ struct City: Hashable, Codable {
         var cityContacts = [User]()
         
         for contact in contacts {
-            if(contact.location == name) {
+            if(contact.timeZone == timeZone) {
                 cityContacts.append(contact)
             }
         }

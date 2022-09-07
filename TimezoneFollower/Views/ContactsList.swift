@@ -1,9 +1,10 @@
 import SwiftUI
 
 struct ContactsList: View {
+    var users: [User]
     
     var body: some View {
-        List(contacts, id:\.self) { contact in
+        List(users, id:\.self) { contact in
             ContactRow(user: contact)
         }
     }
@@ -11,6 +12,6 @@ struct ContactsList: View {
 
 struct ContactsList_Previews: PreviewProvider {
     static var previews: some View {
-        ContactsList()
+        ContactsList(users: contacts)
     }
 }
