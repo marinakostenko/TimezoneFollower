@@ -4,27 +4,40 @@ import SwiftUI
 struct City: Hashable, Codable {
     var name: String
     var country: String
-    var timestamp: Double
+    var timeZone: String
     var imageName: String
     
     var image: Image {
         Image(imageName)
     }
     
-    var time: String {
-        let date = Date(timeIntervalSince1970: timestamp)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm"
-        let strDate = dateFormatter.string(from: date)
-        return strDate
+    func cityDate(d: Date) -> String {
+        var f = Date.FormatStyle()
+            .year()
+            .month(.abbreviated)
+            .day(.twoDigits)
+        f.timeZone = TimeZone(identifier: timeZone)!
+        
+        return d.formatted(f)
     }
     
-    var date: String {
-        let date = Date(timeIntervalSince1970: timestamp)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MMM-dd"
-        let strDate = dateFormatter.string(from: date)
-        return strDate
+    func cityTime(d: Date) -> String {
+        var f = Date.FormatStyle().hour(.defaultDigits(amPM: .abbreviated)).minute(.twoDigits)
+        f.timeZone = TimeZone(identifier: timeZone)!
+        
+        return d.formatted(f)
+    }
+    
+    func getCityContacts() -> [User] {
+        var cityContacts = [User]()
+        
+        for contact in contacts {
+            if(contact.location == name) {
+                cityContacts.append(contact)
+            }
+        }
+        
+        return cityContacts
     }
 }
 

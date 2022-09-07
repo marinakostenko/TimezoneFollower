@@ -3,25 +3,25 @@
         {
             "name": "vancouver",
             "country": "canada",
-            "timestamp": 1653497599,
+            "timeZone": "Canada/Pacific",
             "imageName": "vancouver",
         },
         {
             "name": "kyiv",
             "country": "ukraine",
-            "timestamp": 1654041937,
+            "timeZone": "Europe/Kiev",
             "imageName": "kyiv",
         },
         {
             "name": "prague",
             "country": "czech",
-            "timestamp": 1654041937,
+            "timeZone": "Europe/Prague",
             "imageName": "prague",
         },
         {
             "name": "new york",
             "country": "usa",
-            "timestamp": 1654041937,
+            "timeZone": "America/New_York",
             "imageName": "new_york",
         }
     ]

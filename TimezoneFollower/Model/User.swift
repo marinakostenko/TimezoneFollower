@@ -14,7 +14,11 @@ struct User: Hashable, Codable {
     }
     
     func userDateTime(d: Date) -> String {
-        var f = Date.FormatStyle.dateTime
+        var f = Date.FormatStyle()
+            .year()
+            .month(.abbreviated)
+            .day(.twoDigits)
+            .hour(.defaultDigits(amPM: .abbreviated)).minute(.twoDigits)
         f.timeZone = TimeZone(identifier: timeZone)!
         
         return d.formatted(f)

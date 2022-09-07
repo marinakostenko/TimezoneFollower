@@ -3,11 +3,10 @@ import SwiftUI
 struct ContactRow: View {
     var user: User
     @State var time = Date()
-    let clockTimer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
-    
+
     var body: some View {
         HStack {
-            CircleAvatar(avatar: user.avatar, width: 50, height: 50)
+            CircleAvatar(avatar: user.avatar, size: 50).padding()
             Text(user.name)
             
             Spacer()
