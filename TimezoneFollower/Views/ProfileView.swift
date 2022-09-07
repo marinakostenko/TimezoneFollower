@@ -2,7 +2,8 @@ import SwiftUI
 
 struct ProfileView: View {
     var user: User
-    var time = Date()
+    @State var time = Date()
+    let clockTimer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     
     var body: some View {
         NavigationView {
@@ -14,10 +15,13 @@ struct ProfileView: View {
                     Image(systemName: "mappin.circle.fill")
                     Text(user.location)
                 }.padding()
-              
+                
                 Text(time, style: .date)
                 Text(time, style: .time)
-
+                    .onReceive(clockTimer) { _ in
+                        self.time = Date()
+                    }
+                
                 
                 ContactsList()
                 
@@ -26,7 +30,7 @@ struct ProfileView: View {
         }
     }
 }
-                             
+
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
