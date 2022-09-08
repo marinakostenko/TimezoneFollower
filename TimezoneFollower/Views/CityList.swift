@@ -7,8 +7,14 @@ struct CityList: View {
         ScrollView(.vertical) {
             LazyVGrid(columns: columns) {
                 ForEach(cities, id:\.self) {city in
-                    CityView(city: city)
+                    NavigationLink {
+                        CityDetailedView(city: city)
+                    } label: {
+                        CityView(city: city)
+                    }
                 }
+                .foregroundColor(.white)
+                
             }.padding()
         }
     }
