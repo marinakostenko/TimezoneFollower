@@ -2,7 +2,9 @@ import SwiftUI
 
 struct CityDetailedView: View {
     var city: City
+    var sheetView: Bool
     @State var time = Date()
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         GeometryReader { g in
@@ -14,6 +16,19 @@ struct CityDetailedView: View {
                         .ignoresSafeArea(edges: .top)
                     
                     VStack {
+                        if(sheetView) {
+                            HStack(alignment: .center) {
+                                Button("Cancel") {
+                                    presentationMode.wrappedValue.dismiss()
+                                }
+                                
+                                Spacer()
+                                
+                                Button("Add") {
+                                    print("add ", city.name)
+                                }
+                            }.padding()
+                        }
                         Text(city.name)
                             .foregroundColor(.white)
                             .bold()
@@ -63,6 +78,6 @@ struct CityDetailedView: View {
 
 struct CityDetailedView_Previews: PreviewProvider {
     static var previews: some View {
-        CityDetailedView(city: cities[0])
+        CityDetailedView(city: cities[0], sheetView: false)
     }
 }

@@ -8,7 +8,7 @@ struct CityList: View {
             LazyVGrid(columns: columns) {
                 ForEach(cities, id:\.self) {city in
                     NavigationLink {
-                        CityDetailedView(city: city)
+                        CityDetailedView(city: city, sheetView: false)
                     } label: {
                         CityView(city: city)
                     }
