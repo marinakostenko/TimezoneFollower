@@ -29,6 +29,7 @@ struct CalculatorView: View {
                     .clipped()
                     
                     Text("Select \(selectedCity.name) time").font(.title.bold())
+                    Text("Time \(time.description(with: .current))")
                     
                     DatePicker("", selection: $time)
                         .datePickerStyle(WheelDatePickerStyle()).padding()
