@@ -6,7 +6,7 @@ struct ContentView: View {
     
     //TODO some weird issue with sheet - recheck
     
-    @State private var selectedCity = cities[1]
+    @State private var selectedCity = cities[0]
     @State private var showCitiesGrid = true
     @State private var showNotFound = false
     @State var citiesCollection = [City]()
@@ -23,14 +23,6 @@ struct ContentView: View {
                     .sheet(isPresented: $showingSheet,
                            onDismiss: {showingSheet = false},
                            content: {CityDetailedView(city: selectedCity, sheetView: true)})
-                    
-//                    NavigationLink {
-//                        CityDetailedView(city: city)
-//                    } label: {
-//                        Text(city.name).searchCompletion(city.name)
-//                    }
-//                    .foregroundColor(.black)
-//                    .padding()
                 }
                 
                 if showCitiesGrid {

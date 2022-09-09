@@ -23,5 +23,11 @@
             "country": "usa",
             "timeZone": "America/New_York",
             "imageName": "new_york",
+        },
+        {
+            "name": "boston",
+            "country": "usa",
+            "timeZone": "America/New_York",
+            "imageName": "new_york",
         }
     ]
