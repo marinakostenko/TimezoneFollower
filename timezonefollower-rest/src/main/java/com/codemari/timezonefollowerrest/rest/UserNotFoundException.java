@@ -1,4 +1,4 @@
-package com.codemari.timezonefollowerrest.controllers;
+package com.codemari.timezonefollowerrest.rest;
 
 public class UserNotFoundException extends RuntimeException {
     UserNotFoundException(long id) {

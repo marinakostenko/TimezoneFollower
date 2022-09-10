@@ -1,4 +1,4 @@
-package com.codemari.timezonefollowerrest.controllers;
+package com.codemari.timezonefollowerrest.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

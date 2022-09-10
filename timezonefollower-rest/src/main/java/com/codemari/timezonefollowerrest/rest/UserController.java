@@ -1,7 +1,7 @@
-package com.codemari.timezonefollowerrest.controllers;
+package com.codemari.timezonefollowerrest.rest;
 
-import com.codemari.timezonefollowerrest.datamodels.AppUser;
-import com.codemari.timezonefollowerrest.repositories.UserRepository;
+import com.codemari.timezonefollowerrest.domain.AppUser;
+import com.codemari.timezonefollowerrest.dao.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

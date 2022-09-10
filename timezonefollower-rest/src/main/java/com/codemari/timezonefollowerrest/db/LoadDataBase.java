@@ -1,7 +1,7 @@
 package com.codemari.timezonefollowerrest.db;
 
-import com.codemari.timezonefollowerrest.datamodels.AppUser;
-import com.codemari.timezonefollowerrest.repositories.UserRepository;
+import com.codemari.timezonefollowerrest.domain.AppUser;
+import com.codemari.timezonefollowerrest.dao.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;

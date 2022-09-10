@@ -1,4 +1,4 @@
-package com.codemari.timezonefollowerrest.datamodels;
+package com.codemari.timezonefollowerrest.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
