@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,10 +19,13 @@ import java.util.Collections;
 @NoArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class AppUserDto {
+    private Long id;
     private String email;
     private String name;
     private String phoneNumber;
     private Boolean isActive;
-    private Collection<ContactDto> contacts;
-    private LocationDto location;
+    private String city;
+    private String country;
+    private String timeZone;
+    private Set<ContactDto> contacts;
 }

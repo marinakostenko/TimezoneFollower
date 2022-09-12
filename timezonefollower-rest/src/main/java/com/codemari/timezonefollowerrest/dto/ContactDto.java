@@ -10,8 +10,9 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-@ToString
 @NoArgsConstructor
+@ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ContactDto {
+    private Long contact_id;
 }

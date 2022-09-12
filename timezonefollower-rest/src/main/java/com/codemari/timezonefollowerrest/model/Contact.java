@@ -16,10 +16,8 @@ import java.util.Collections;
 @Accessors(chain = true)
 @NoArgsConstructor
 public class Contact {
-    @Id
     @Column(name = "contact_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long contact_id;
 
     @Column(name = "main_user_id")
     private Long mainUserId;
