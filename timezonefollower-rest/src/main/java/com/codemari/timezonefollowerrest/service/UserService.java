@@ -1,7 +1,7 @@
 package com.codemari.timezonefollowerrest.service;
 
 import com.codemari.timezonefollowerrest.dao.UserRepository;
-import com.codemari.timezonefollowerrest.domain.AppUser;
+import com.codemari.timezonefollowerrest.model.AppUser;
 import com.codemari.timezonefollowerrest.exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,9 +36,8 @@ public class UserService {
         return userRepository.findById(id)
                 .map(appUser -> {
                     appUser.setName(newAppUser.getName());
-                    appUser.setLocation(newAppUser.getLocation());
+                    appUser.setEmail(newAppUser.getEmail());
                     appUser.setPhoneNumber(newAppUser.getPhoneNumber());
-                    appUser.setTimeZone(newAppUser.getTimeZone());
                     return userRepository.save(appUser);
                 })
                 .orElseGet(() -> {
