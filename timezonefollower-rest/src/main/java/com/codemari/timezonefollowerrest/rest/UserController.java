@@ -2,53 +2,59 @@ package com.codemari.timezonefollowerrest.rest;
 
 import com.codemari.timezonefollowerrest.domain.AppUser;
 import com.codemari.timezonefollowerrest.dao.UserRepository;
+import com.codemari.timezonefollowerrest.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/api/users")
 public class UserController {
-    private final UserRepository repository;
 
+    @Autowired
+    private UserService userService;
 
-    public UserController(UserRepository repository) {
-        this.repository = repository;
+    @GetMapping("")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get a list of all users")
+    public List<AppUser> getAllUsers() {
+        return this.userService.getAllUsers();
     }
 
-    @GetMapping("/users")
-    List<AppUser> getAllUsers() {
-        return repository.findAll();
+    @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Create a new user")
+    public AppUser newUser(@RequestBody AppUser newAppUser) {
+        return this.userService.addUser(newAppUser);
     }
 
-    @PostMapping("/users")
-    AppUser newUser(@RequestBody AppUser newAppUser) {
-        return repository.save(newAppUser);
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get a single user", notes = "User ID is required")
+    public AppUser getUser(@ApiParam(value = "User ID", required = true)
+                    @PathVariable Long id) {
+        return this.userService.getUser(id);
     }
 
-    @GetMapping("/users/{id}")
-    AppUser getUser(@PathVariable Long id) {
-        return repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation(value = "Update user")
+    public AppUser updateUser(@ApiParam(value = "The id of existing user", required = true)
+                       @PathVariable Long id, @RequestBody AppUser newAppUser) {
+        return this.userService.updateUser(id, newAppUser);
     }
 
-    @PutMapping("/users/{id}")
-    AppUser replaceUser(@RequestBody AppUser newAppUser, @PathVariable Long id) {
-        return repository.findById(id)
-                .map(appUser -> {
-                    appUser.setName(newAppUser.getName());
-                    appUser.setLocation(newAppUser.getLocation());
-                    appUser.setPhoneNumber(newAppUser.getPhoneNumber());
-                    appUser.setTimeZone(newAppUser.getTimeZone());
-                    return repository.save(appUser);
-                })
-                .orElseGet(() -> {
-                    newAppUser.setId(id);
-                    return repository.save(newAppUser);
-                });
-    }
-
-    @DeleteMapping("/users/{id}")
-    void deleteMapping(@PathVariable Long id) {
-        repository.deleteById(id);
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation(value = "Delete user")
+    public void deleteUser(
+            @PathVariable Long id) {
+        this.userService.deleteUser(id);
     }
 
 }
