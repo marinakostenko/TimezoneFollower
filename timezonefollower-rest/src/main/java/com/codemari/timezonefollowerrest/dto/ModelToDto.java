@@ -19,11 +19,7 @@ public class ModelToDto {
                 .setPhoneNumber(appUser.getPhoneNumber())
                 .setIsActive(appUser.getIsActive())
                 .setCity(appUser.getLocation().getCity())
-                .setTimeZone(appUser.getLocation().getTimeZone())
-                .setContacts(new ArrayList<>(
-                        appUser.getContacts().stream()
-                                .map(contact -> new ModelMapper().map(contact, ContactDto.class))
-                                .collect(Collectors.toList())));
+                .setTimeZone(appUser.getLocation().getTimeZone());
     }
 
     public static LocationDto toLocationDto(Location location) {
@@ -33,15 +29,11 @@ public class ModelToDto {
                 .setCountry(location.getCountry())
                 .setRegion(location.getRegion())
                 .setTimeZone(location.getTimeZone())
-                .setUsers(new HashSet<>(
+                .setUsers(new ArrayList<>(
                         location.getUsers().stream()
                                 .map(user -> new ModelMapper().map(user, AppUserDto.class))
-                                .collect(Collectors.toSet())
+                                .collect(Collectors.toList())
                 ));
-    }
-
-    public static ContactDto toContactDto(Contact contact) {
-        return new ContactDto().setContactId(contact.getContactId());
     }
 
 

@@ -1,6 +1,5 @@
 package com.codemari.timezonefollowerrest.dto;
 
-import com.codemari.timezonefollowerrest.model.Location;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,10 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -28,5 +24,4 @@ public class AppUserDto {
     private String city;
     private String country;
     private String timeZone;
-    private List<ContactDto> contacts;
 }

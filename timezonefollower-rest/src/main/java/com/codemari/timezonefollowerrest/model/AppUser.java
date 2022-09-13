@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -33,7 +34,7 @@ public class AppUser {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "contact", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "contact_id")})
-    private Collection<Contact> contacts;
+    private List<Contact> contacts;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")

@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -20,5 +21,5 @@ public class LocationDto {
     String region;
     String country;
     String timeZone;
-    Set<AppUserDto> users;
+    List<AppUserDto> users;
 }
