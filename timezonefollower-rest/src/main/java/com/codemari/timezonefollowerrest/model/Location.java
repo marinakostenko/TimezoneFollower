@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 import org.apache.catalina.User;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,5 +35,5 @@ public class Location {
     private String timeZone;
 
     @OneToMany(mappedBy = "location")
-    private Set<User> users;
+    private List<AppUser> users;
 }

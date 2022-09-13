@@ -39,4 +39,8 @@ public class AppUser {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private List<Location> savedLocations;
 }

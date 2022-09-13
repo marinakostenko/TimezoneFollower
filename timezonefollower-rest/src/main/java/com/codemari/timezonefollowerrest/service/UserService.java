@@ -1,13 +1,16 @@
 package com.codemari.timezonefollowerrest.service;
 
 import com.codemari.timezonefollowerrest.dao.ContactRepository;
+import com.codemari.timezonefollowerrest.dao.LocationRepository;
 import com.codemari.timezonefollowerrest.dao.UserRepository;
 import com.codemari.timezonefollowerrest.dto.AppUserDto;
 import com.codemari.timezonefollowerrest.dto.ModelToDto;
 import com.codemari.timezonefollowerrest.exception.DuplicatedUserException;
+import com.codemari.timezonefollowerrest.exception.LocationNotFoundException;
 import com.codemari.timezonefollowerrest.model.AppUser;
 import com.codemari.timezonefollowerrest.exception.UserNotFoundException;
 import com.codemari.timezonefollowerrest.model.Contact;
+import com.codemari.timezonefollowerrest.model.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,24 +31,29 @@ public class UserService {
     @Autowired
     private ContactRepository contactRepository;
 
+    @Autowired
+    private LocationRepository locationRepository;
+
     public UserService() {
     }
 
     public AppUserDto addUser(AppUserDto userDto) {
         AppUser user = userRepository.findByPhoneNumber(userDto.getPhoneNumber());
         if (user == null || !user.getIsActive()) {
-
+            Location location = locationRepository.findByCityAndRegionAndCountry(userDto.getCity(), userDto.getRegion(), userDto.getCountry());
 
             if (user == null) {
                 user = new AppUser()
                         .setName(userDto.getName())
                         .setEmail(userDto.getEmail())
+                        .setLocation(location)
                         .setPhoneNumber(userDto.getPhoneNumber())
                         .setIsActive(true);
             } else {
                 user
                         .setName(userDto.getName())
                         .setEmail(userDto.getEmail())
+                        .setLocation(location)
                         .setIsActive(true);
             }
 

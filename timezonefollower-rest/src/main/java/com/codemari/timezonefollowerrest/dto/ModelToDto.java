@@ -19,7 +19,9 @@ public class ModelToDto {
                 .setPhoneNumber(appUser.getPhoneNumber())
                 .setIsActive(appUser.getIsActive())
                 .setCity(appUser.getLocation().getCity())
-                .setTimeZone(appUser.getLocation().getTimeZone());
+                .setTimeZone(appUser.getLocation().getTimeZone())
+                .setCountry(appUser.getLocation().getCountry())
+                .setRegion(appUser.getLocation().getRegion());
     }
 
     public static LocationDto toLocationDto(Location location) {

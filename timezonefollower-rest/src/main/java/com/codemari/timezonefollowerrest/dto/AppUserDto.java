@@ -23,5 +23,6 @@ public class AppUserDto {
     private Boolean isActive;
     private String city;
     private String country;
+    private String region;
     private String timeZone;
 }
