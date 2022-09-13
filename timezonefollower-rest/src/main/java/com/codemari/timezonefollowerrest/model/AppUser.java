@@ -7,7 +7,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -32,15 +31,15 @@ public class AppUser {
     @Column(name = "active_user")
     private Boolean isActive;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "contact", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "contact_id")})
-    private List<Contact> contacts;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private List<Location> savedLocations;
+    @OneToMany(mappedBy = "main_user")
+    private List<Contact> contacts;
+
+    @OneToMany(mappedBy = "app_user")
+    private List<FavouriteLocation> favouriteLocations;
+
+
 }

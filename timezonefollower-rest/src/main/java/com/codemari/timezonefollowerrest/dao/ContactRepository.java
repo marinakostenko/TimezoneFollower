@@ -5,5 +5,5 @@ import com.codemari.timezonefollowerrest.model.Contact;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ContactRepository extends JpaRepository<Contact, Long> {
-    Contact findByContactIdAndMainUserId(Long contactId, Long mainUserId);
+    Contact findByContactUserAndMainUser(AppUser contactUser, AppUser mainUser);
 }

@@ -111,10 +111,10 @@ public class UserService {
                     userRepository.save(contactAppUser);
                 }
 
-                Contact contact = contactRepository.findByContactIdAndMainUserId(contactAppUser.getId(), user.get().getId());
+                Contact contact = contactRepository.findByContactUserAndMainUser(contactAppUser, user.get());
 
                 if (contact == null) {
-                    contact = new Contact().setContactId(contactAppUser.getId()).setMainUserId(user.get().getId());
+                    contact = new Contact().setContactUser(contactAppUser).setMainUser(user.get());
                 }
                 contactRepository.save(contact);
                 contactList.add(ModelToDto.toAppUserDto(contactAppUser));
@@ -134,7 +134,7 @@ public class UserService {
             List<Contact> contacts = user.get().getContacts();
 
             for (Contact contact : contacts) {
-                Optional<AppUser> contactUser = userRepository.findById(contact.getContactId());
+                Optional<AppUser> contactUser = Optional.ofNullable(contact.getContactUser());
 
                 contactUser.ifPresent(appUser -> contactList.add(ModelToDto.toAppUserDto(contactUser.get())));
             }

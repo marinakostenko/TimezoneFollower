@@ -6,24 +6,25 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
-@Table(name = "contact")
+@Table(name = "favourite_location")
 @Getter
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-public class Contact {
+public class FavouriteLocation {
     @Id
-    @Column(name = "contact_id")
+    @Column(name = "favourite_location_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "contact_user")
-    private AppUser contactUser;
+    @Column(name = "location")
+    private Location location;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @Column(name = "main_user")
-    private AppUser mainUser;
+    @JoinColumn(name="user_id", nullable=false)
+    @Column(name = "app_user")
+    private AppUser appUser;
 }

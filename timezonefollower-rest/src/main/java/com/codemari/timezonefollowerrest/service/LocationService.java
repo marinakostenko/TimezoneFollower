@@ -1,6 +1,7 @@
 package com.codemari.timezonefollowerrest.service;
 
 import com.codemari.timezonefollowerrest.dao.ContactRepository;
+import com.codemari.timezonefollowerrest.dao.FavouriteLocationRepository;
 import com.codemari.timezonefollowerrest.dao.LocationRepository;
 import com.codemari.timezonefollowerrest.dao.UserRepository;
 import com.codemari.timezonefollowerrest.dto.AppUserDto;
@@ -10,16 +11,18 @@ import com.codemari.timezonefollowerrest.exception.LocationNotFoundException;
 import com.codemari.timezonefollowerrest.exception.UserNotFoundException;
 import com.codemari.timezonefollowerrest.model.AppUser;
 import com.codemari.timezonefollowerrest.model.Contact;
+import com.codemari.timezonefollowerrest.model.FavouriteLocation;
 import com.codemari.timezonefollowerrest.model.Location;
-import org.apache.catalina.User;
-import org.hibernate.mapping.Collection;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,9 +34,8 @@ public class LocationService {
 
     @Autowired
     UserRepository userRepository;
-
     @Autowired
-    ContactRepository contactRepository;
+    FavouriteLocationRepository favouriteLocationRepository;
 
     public List<LocationDto> getAllLocations() {
         List<LocationDto> locations = new ArrayList<>(locationRepository.findAll().stream().map(ModelToDto::toLocationDto).toList());
@@ -76,16 +78,74 @@ public class LocationService {
             List<AppUserDto> appUserDtosByLocation = new ArrayList<>();
 
             for(Contact contact : contacts) {
-                Optional<AppUser> user = userRepository.findById(contact.getContactId());
+                AppUser user = contact.getContactUser();
 
-                if(user.isPresent() && usersByLocation.contains(user.get())) {
-                    appUserDtosByLocation.add(ModelToDto.toAppUserDto(user.get()));
+                if(user != null && usersByLocation.contains(user)) {
+                    appUserDtosByLocation.add(ModelToDto.toAppUserDto(user));
                 }
             }
 
             return appUserDtosByLocation;
         }
         throw new LocationNotFoundException(String.valueOf(locationId));
+    }
+
+    public List<LocationDto> findAllFavouriteLocations(AppUserDto appUserDto) {
+        AppUser appUser = userRepository.findByPhoneNumber(appUserDto.getPhoneNumber());
+
+        if(appUser == null) {
+            throw new UserNotFoundException(appUserDto.getPhoneNumber());
+        }
+        return appUser
+                .getFavouriteLocations()
+                .stream()
+                .map(location -> ModelToDto.toLocationDto(location.getLocation())).toList();
+    }
+
+    @Transactional
+    public LocationDto addFavouriteLocation(AppUserDto appUserDto, LocationDto locationDto) {
+        AppUser appUser = userRepository.findByPhoneNumber(appUserDto.getPhoneNumber());
+
+        if(appUser == null) {
+            throw new UserNotFoundException(appUserDto.getPhoneNumber());
+        }
+
+        Location location = locationRepository.findByCityAndRegionAndCountry(locationDto.getCity(), locationDto.getRegion(), locationDto.getCountry());
+
+        if(location != null) {
+            Optional<FavouriteLocation> existedLocation =
+                    appUser.getFavouriteLocations().stream().filter(fLocation -> fLocation.getLocation().equals(location)).findFirst();
+            if(existedLocation.isEmpty()) {
+                FavouriteLocation favouriteLocation = new FavouriteLocation().setLocation(location).setAppUser(appUser);
+                favouriteLocationRepository.save(favouriteLocation);
+
+                return locationDto;
+            }
+        }
+
+        throw new LocationNotFoundException(locationDto.getCity() + " " + locationDto.getRegion() + " " + locationDto.getCountry());
+    }
+
+    @Transactional
+    public LocationDto deleteFavouriteLocation(AppUserDto appUserDto, LocationDto locationDto) {
+        AppUser appUser = userRepository.findByPhoneNumber(appUserDto.getPhoneNumber());
+
+        if(appUser == null) {
+            throw new UserNotFoundException(appUserDto.getPhoneNumber());
+        }
+        Location location = locationRepository.findByCityAndRegionAndCountry(locationDto.getCity(), locationDto.getRegion(), locationDto.getCountry());
+
+        if(location != null) {
+            Optional<FavouriteLocation> existedLocation =
+                    appUser.getFavouriteLocations().stream().filter(fLocation -> fLocation.getLocation().equals(location)).findFirst();
+
+            if(existedLocation.isPresent()) {
+                locationRepository.delete(location);
+            }
+
+            return locationDto;
+        }
+        throw new LocationNotFoundException(locationDto.getCity() + " " + locationDto.getRegion() + " " + locationDto.getCountry());
     }
 
 }
