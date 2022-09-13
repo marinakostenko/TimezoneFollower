@@ -24,28 +24,28 @@ public class UserController {
         return this.userService.getAllUsers();
     }
 
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "Create a new user")
-    public AppUser newUser(@RequestBody AppUser newAppUser) {
-        return this.userService.addUser(newAppUser);
-    }
+//    @PostMapping("")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ApiOperation(value = "Create a new user")
+//    public AppUser newUser(@RequestBody AppUser newAppUser) {
+//        return this.userService.addUser(newAppUser);
+//    }
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Get a single user", notes = "User ID is required")
-    public AppUser getUser(@ApiParam(value = "User ID", required = true)
-                    @PathVariable Long id) {
-        return this.userService.getUser(id);
-    }
+//    @GetMapping("/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    @ApiOperation(value = "Get a single user", notes = "User ID is required")
+//    public AppUser getUser(@ApiParam(value = "User ID", required = true)
+//                    @PathVariable Long id) {
+//        return this.userService.getUser(id);
+//    }
 
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ApiOperation(value = "Update user")
-    public AppUser updateUser(@ApiParam(value = "The id of existing user", required = true)
-                       @PathVariable Long id, @RequestBody AppUser newAppUser) {
-        return this.userService.updateUser(id, newAppUser);
-    }
+//    @PutMapping("/{id}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    @ApiOperation(value = "Update user")
+//    public AppUser updateUser(@ApiParam(value = "The id of existing user", required = true)
+//                       @PathVariable Long id, @RequestBody AppUser newAppUser) {
+//        return this.userService.updateUser(id, newAppUser);
+//    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

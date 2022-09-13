@@ -14,5 +14,5 @@ import lombok.experimental.Accessors;
 @ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ContactDto {
-    private Long contact_id;
+    private Long contactId;
 }

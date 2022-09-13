@@ -1,5 +1,6 @@
 package com.codemari.timezonefollowerrest.rest;
 
+import com.codemari.timezonefollowerrest.exception.DuplicatedUserException;
 import com.codemari.timezonefollowerrest.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,6 +15,13 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     String userNotFoundHandler(UserNotFoundException e) {
+        return e.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(DuplicatedUserException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    String duplicatedUserExceptionHandler(DuplicatedUserException e) {
         return e.getMessage();
     }
 }

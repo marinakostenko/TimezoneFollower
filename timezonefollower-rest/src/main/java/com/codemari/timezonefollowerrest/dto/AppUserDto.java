@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -27,5 +28,5 @@ public class AppUserDto {
     private String city;
     private String country;
     private String timeZone;
-    private Set<ContactDto> contacts;
+    private List<ContactDto> contacts;
 }

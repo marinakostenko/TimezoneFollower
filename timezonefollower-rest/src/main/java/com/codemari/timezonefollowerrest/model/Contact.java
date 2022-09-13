@@ -17,7 +17,7 @@ import java.util.Collections;
 @NoArgsConstructor
 public class Contact {
     @Column(name = "contact_id")
-    private Long contact_id;
+    private Long contactId;
 
     @Column(name = "main_user_id")
     private Long mainUserId;

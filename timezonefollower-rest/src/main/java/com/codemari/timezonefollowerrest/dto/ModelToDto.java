@@ -1,13 +1,12 @@
 package com.codemari.timezonefollowerrest.dto;
 
 import com.codemari.timezonefollowerrest.model.AppUser;
+import com.codemari.timezonefollowerrest.model.Contact;
 import com.codemari.timezonefollowerrest.model.Location;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class ModelToDto {
@@ -21,10 +20,10 @@ public class ModelToDto {
                 .setIsActive(appUser.getIsActive())
                 .setCity(appUser.getLocation().getCity())
                 .setTimeZone(appUser.getLocation().getTimeZone())
-                .setContacts(new HashSet<>(
+                .setContacts(new ArrayList<>(
                         appUser.getContacts().stream()
                                 .map(contact -> new ModelMapper().map(contact, ContactDto.class))
-                                .collect(Collectors.toSet())));
+                                .collect(Collectors.toList())));
     }
 
     public static LocationDto toLocationDto(Location location) {
@@ -39,6 +38,10 @@ public class ModelToDto {
                                 .map(user -> new ModelMapper().map(user, AppUserDto.class))
                                 .collect(Collectors.toSet())
                 ));
+    }
+
+    public static ContactDto toContactDto(Contact contact) {
+        return new ContactDto().setContactId(contact.getContactId());
     }
 
 
