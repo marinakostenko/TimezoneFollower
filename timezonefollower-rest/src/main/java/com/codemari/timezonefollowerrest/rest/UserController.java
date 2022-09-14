@@ -1,9 +1,13 @@
 package com.codemari.timezonefollowerrest.rest;
 
-import com.codemari.timezonefollowerrest.model.AppUser;
+import com.codemari.timezonefollowerrest.dto.AppUserDto;
+import com.codemari.timezonefollowerrest.rest.request.UpdateUserContactsRequest;
+import com.codemari.timezonefollowerrest.rest.request.UserAuthenticateRequest;
 import com.codemari.timezonefollowerrest.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.Authorization;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,48 +15,93 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/users")
+@RequestMapping(value = "/api/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Get a list of all users")
-    public List<AppUser> getAllUsers() {
-        return this.userService.getAllUsers();
+    @PostMapping("/authenticate")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Create a new user")
+    public Long authenticate(@RequestBody @Valid UserAuthenticateRequest userAuthenticateRequest) {
+        AppUserDto userDto = new AppUserDto()
+                .setEmail(userAuthenticateRequest.getEmail())
+                .setName(userAuthenticateRequest.getName() == null ? "user name" : userAuthenticateRequest.getName())
+                .setPhoneNumber(userAuthenticateRequest.getPhoneNumber())
+                .setCity(userAuthenticateRequest.getCity())
+                .setCountry(userAuthenticateRequest.getCountry())
+                .setRegion(userAuthenticateRequest.getRegion())
+                .setTimeZone(userAuthenticateRequest.getTimeZone());
+
+        userDto = this.userService.addUser(userDto);
+
+        return userDto.getId();
     }
 
-//    @PostMapping("")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @ApiOperation(value = "Create a new user")
-//    public AppUser newUser(@RequestBody AppUser newAppUser) {
-//        return this.userService.addUser(newAppUser);
-//    }
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get a single user", notes = "User ID is required", authorizations = {@Authorization(value = "apiKey")})
+    public AppUserDto getUserById(@ApiParam(value = "User ID", required = true)
+                    @PathVariable Long id) {
+        return this.userService.findUserById(id);
+    }
 
-//    @GetMapping("/{id}")
-//    @ResponseStatus(HttpStatus.OK)
-//    @ApiOperation(value = "Get a single user", notes = "User ID is required")
-//    public AppUser getUser(@ApiParam(value = "User ID", required = true)
-//                    @PathVariable Long id) {
-//        return this.userService.getUser(id);
-//    }
+    @GetMapping("/{number}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get a single user", notes = "User phone number is required", authorizations = {@Authorization(value = "apiKey")})
+    public AppUserDto getUserByPhoneNumber(@ApiParam(value = "User phone number", required = true)
+                                  @PathVariable String phoneNumber) {
+        return this.userService.findUserByPhoneNumber(phoneNumber);
+    }
 
-//    @PutMapping("/{id}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    @ApiOperation(value = "Update user")
-//    public AppUser updateUser(@ApiParam(value = "The id of existing user", required = true)
-//                       @PathVariable Long id, @RequestBody AppUser newAppUser) {
-//        return this.userService.updateUser(id, newAppUser);
-//    }
+    @GetMapping("/contacts")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Update a user contacts", notes = "User phone number and email are required", authorizations = {@Authorization(value = "apiKey")})
+    public List<AppUserDto> getUserContacts(@ApiParam(value = "User id", required = true)
+                                                @PathVariable String userEmail,
+                                            @PathVariable String phoneNumber) {
+        return this.userService.getUserContacts(new AppUserDto().setEmail(userEmail).setPhoneNumber(phoneNumber));
+    }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/contacts")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get a user contacts", notes = "User phone number and email are required", authorizations = {@Authorization(value = "apiKey")})
+    public List<AppUserDto> updateUserContacts(@ApiParam(value = "User id", required = true) @PathVariable UpdateUserContactsRequest userContactsRequest) {
+        AppUserDto userDto = new AppUserDto()
+                .setEmail(userContactsRequest.getEmail())
+                .setPhoneNumber(userContactsRequest.getPhoneNumber());
+
+        return this.userService.updateUserContacts(userDto, userContactsRequest.getContacts());
+    }
+
+
+    @PutMapping("")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation(value = "Update user")
+    public AppUserDto updateUser(@ApiParam(value = "The phone number and email of existing user", required = true)
+                                     @RequestBody @Valid UserAuthenticateRequest userAuthenticateRequest) {
+        AppUserDto userDto = new AppUserDto()
+                .setEmail(userAuthenticateRequest.getEmail())
+                .setName(userAuthenticateRequest.getName() == null ? "user name" : userAuthenticateRequest.getName())
+                .setPhoneNumber(userAuthenticateRequest.getPhoneNumber())
+                .setCity(userAuthenticateRequest.getCity())
+                .setCountry(userAuthenticateRequest.getCountry())
+                .setRegion(userAuthenticateRequest.getRegion())
+                .setTimeZone(userAuthenticateRequest.getTimeZone());
+
+        userDto = this.userService.updateUser(userDto);
+
+        return userDto;
+    }
+
+
+    @DeleteMapping("")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete user")
-    public void deleteUser(
-            @PathVariable Long id) {
-        this.userService.deleteUser(id);
+    public void deleteUser(@ApiParam(value = "The existing user entity", required = true)
+                               @PathVariable AppUserDto appUserDto) {
+        this.userService.deleteUser(appUserDto);
     }
 
 }

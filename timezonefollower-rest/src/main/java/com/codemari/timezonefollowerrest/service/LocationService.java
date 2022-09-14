@@ -1,6 +1,5 @@
 package com.codemari.timezonefollowerrest.service;
 
-import com.codemari.timezonefollowerrest.dao.ContactRepository;
 import com.codemari.timezonefollowerrest.dao.FavouriteLocationRepository;
 import com.codemari.timezonefollowerrest.dao.LocationRepository;
 import com.codemari.timezonefollowerrest.dao.UserRepository;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class LocationService {

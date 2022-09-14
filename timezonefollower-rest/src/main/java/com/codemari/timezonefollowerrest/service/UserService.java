@@ -145,11 +145,12 @@ public class UserService {
         throw new UserNotFoundException(appUserDto.getPhoneNumber());
     }
 
-    public List<AppUser> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public AppUserDto deleteUser(AppUserDto appUserDto) {
+        Optional<AppUser> user = Optional.ofNullable(userRepository.findByPhoneNumber(appUserDto.getPhoneNumber()));
+        if (user.isPresent()) {
+            userRepository.deleteById(user.get().getId());
+            return ModelToDto.toAppUserDto(user.get());
+        }
+        throw new UserNotFoundException(appUserDto.getPhoneNumber());
     }
 }
