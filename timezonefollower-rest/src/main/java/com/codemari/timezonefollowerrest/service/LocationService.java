@@ -28,12 +28,15 @@ public class LocationService {
     private static final Logger log = LoggerFactory.getLogger(LocationService.class);
 
     @Autowired
-    LocationRepository locationRepository;
+    private LocationRepository locationRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    FavouriteLocationRepository favouriteLocationRepository;
+    private FavouriteLocationRepository favouriteLocationRepository;
+
+    public LocationService() {
+    }
 
     public List<LocationDto> getAllLocations() {
         List<LocationDto> locations = new ArrayList<>(locationRepository.findAll().stream().map(ModelToDto::toLocationDto).toList());
@@ -76,10 +79,10 @@ public class LocationService {
             List<AppUserDto> appUserDtosByLocation = new ArrayList<>();
 
             for(Contact contact : contacts) {
-                AppUser user = contact.getContactUser();
+                Optional<AppUser> user = userRepository.findById(contact.getContactUser());
 
-                if(user != null && usersByLocation.contains(user)) {
-                    appUserDtosByLocation.add(ModelToDto.toAppUserDto(user));
+                if(user.isPresent() && usersByLocation.contains(user.get())) {
+                    appUserDtosByLocation.add(ModelToDto.toAppUserDto(user.get()));
                 }
             }
 
@@ -94,10 +97,13 @@ public class LocationService {
         if(appUser == null) {
             throw new UserNotFoundException(appUserDto.getPhoneNumber());
         }
-        return appUser
-                .getFavouriteLocations()
-                .stream()
-                .map(location -> ModelToDto.toLocationDto(location.getLocation())).toList();
+
+        List<LocationDto> ret = new ArrayList<>();
+        for (FavouriteLocation location : appUser.getFavouriteLocations()) {
+            Optional<Location> locationModel = locationRepository.findById(location.getLocation());
+            locationModel.ifPresent(value -> ret.add(ModelToDto.toLocationDto(value)));
+        }
+        return ret;
     }
 
     @Transactional
@@ -112,9 +118,9 @@ public class LocationService {
 
         if(location.isPresent()) {
             Optional<FavouriteLocation> existedLocation =
-                    appUser.getFavouriteLocations().stream().filter(fLocation -> fLocation.getLocation().equals(location.get())).findFirst();
+                    appUser.getFavouriteLocations().stream().filter(fLocation -> fLocation.getLocation().equals(location.get().getId())).findFirst();
             if(existedLocation.isEmpty()) {
-                FavouriteLocation favouriteLocation = new FavouriteLocation().setLocation(location.get()).setAppUser(appUser);
+                FavouriteLocation favouriteLocation = new FavouriteLocation().setLocation(location.get().getId()).setAppUser(appUser);
                 favouriteLocationRepository.save(favouriteLocation);
 
                 return ModelToDto.toLocationDto(location.get());
@@ -135,7 +141,7 @@ public class LocationService {
 
         if(location.isPresent()) {
             Optional<FavouriteLocation> existedLocation =
-                    appUser.getFavouriteLocations().stream().filter(fLocation -> fLocation.getLocation().equals(location.get())).findFirst();
+                    appUser.getFavouriteLocations().stream().filter(fLocation -> fLocation.getLocation().equals(location.get().getId())).findFirst();
 
             if(existedLocation.isPresent()) {
                 locationRepository.delete(location.get());

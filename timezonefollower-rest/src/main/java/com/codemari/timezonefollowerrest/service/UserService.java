@@ -6,9 +6,8 @@ import com.codemari.timezonefollowerrest.dao.UserRepository;
 import com.codemari.timezonefollowerrest.dto.AppUserDto;
 import com.codemari.timezonefollowerrest.dto.ModelToDto;
 import com.codemari.timezonefollowerrest.exception.DuplicatedUserException;
-import com.codemari.timezonefollowerrest.exception.LocationNotFoundException;
-import com.codemari.timezonefollowerrest.model.AppUser;
 import com.codemari.timezonefollowerrest.exception.UserNotFoundException;
+import com.codemari.timezonefollowerrest.model.AppUser;
 import com.codemari.timezonefollowerrest.model.Contact;
 import com.codemari.timezonefollowerrest.model.Location;
 import org.slf4j.Logger;
@@ -114,7 +113,7 @@ public class UserService {
                 Contact contact = contactRepository.findByContactUserAndMainUser(contactAppUser, user.get());
 
                 if (contact == null) {
-                    contact = new Contact().setContactUser(contactAppUser).setMainUser(user.get());
+                    contact = new Contact().setContactUser(contactAppUser.getId()).setMainUser(user.get());
                 }
                 contactRepository.save(contact);
                 contactList.add(ModelToDto.toAppUserDto(contactAppUser));
@@ -134,7 +133,7 @@ public class UserService {
             List<Contact> contacts = user.get().getContacts();
 
             for (Contact contact : contacts) {
-                Optional<AppUser> contactUser = Optional.ofNullable(contact.getContactUser());
+                Optional<AppUser> contactUser = userRepository.findById(contact.getContactUser());
 
                 contactUser.ifPresent(appUser -> contactList.add(ModelToDto.toAppUserDto(contactUser.get())));
             }

@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "app_user")
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -31,14 +31,14 @@ public class AppUser {
     @Column(name = "active_user")
     private Boolean isActive;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Location.class)
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @OneToMany(mappedBy = "main_user")
+    @OneToMany(mappedBy = "mainUser")
     private List<Contact> contacts;
 
-    @OneToMany(mappedBy = "app_user")
+    @OneToMany(mappedBy = "appUser")
     private List<FavouriteLocation> favouriteLocations;
 
 

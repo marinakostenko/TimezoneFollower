@@ -21,10 +21,9 @@ public class FavouriteLocation {
     private Long id;
 
     @Column(name = "location")
-    private Location location;
+    private Long location;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = AppUser.class)
     @JoinColumn(name="user_id", nullable=false)
-    @Column(name = "app_user")
     private AppUser appUser;
 }

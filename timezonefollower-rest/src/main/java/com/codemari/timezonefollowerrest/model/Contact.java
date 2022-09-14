@@ -20,10 +20,9 @@ public class Contact {
     private Long id;
 
     @Column(name = "contact_user")
-    private AppUser contactUser;
+    private Long contactUser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = AppUser.class)
     @JoinColumn(name = "user_id")
-    @Column(name = "main_user")
     private AppUser mainUser;
 }
