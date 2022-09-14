@@ -101,49 +101,49 @@ public class LocationService {
     }
 
     @Transactional
-    public LocationDto addFavouriteLocation(AppUserDto appUserDto, LocationDto locationDto) {
+    public LocationDto addFavouriteLocation(AppUserDto appUserDto, Long locationId) {
         AppUser appUser = userRepository.findByPhoneNumber(appUserDto.getPhoneNumber());
 
         if(appUser == null) {
             throw new UserNotFoundException(appUserDto.getPhoneNumber());
         }
 
-        Location location = locationRepository.findByCityAndRegionAndCountry(locationDto.getCity(), locationDto.getRegion(), locationDto.getCountry());
+        Optional<Location> location = locationRepository.findById(locationId);
 
-        if(location != null) {
+        if(location.isPresent()) {
             Optional<FavouriteLocation> existedLocation =
-                    appUser.getFavouriteLocations().stream().filter(fLocation -> fLocation.getLocation().equals(location)).findFirst();
+                    appUser.getFavouriteLocations().stream().filter(fLocation -> fLocation.getLocation().equals(location.get())).findFirst();
             if(existedLocation.isEmpty()) {
-                FavouriteLocation favouriteLocation = new FavouriteLocation().setLocation(location).setAppUser(appUser);
+                FavouriteLocation favouriteLocation = new FavouriteLocation().setLocation(location.get()).setAppUser(appUser);
                 favouriteLocationRepository.save(favouriteLocation);
 
-                return locationDto;
+                return ModelToDto.toLocationDto(location.get());
             }
         }
 
-        throw new LocationNotFoundException(locationDto.getCity() + " " + locationDto.getRegion() + " " + locationDto.getCountry());
+        throw new LocationNotFoundException(String.valueOf(locationId));
     }
 
     @Transactional
-    public LocationDto deleteFavouriteLocation(AppUserDto appUserDto, LocationDto locationDto) {
+    public LocationDto deleteFavouriteLocation(AppUserDto appUserDto, Long locationId) {
         AppUser appUser = userRepository.findByPhoneNumber(appUserDto.getPhoneNumber());
 
         if(appUser == null) {
             throw new UserNotFoundException(appUserDto.getPhoneNumber());
         }
-        Location location = locationRepository.findByCityAndRegionAndCountry(locationDto.getCity(), locationDto.getRegion(), locationDto.getCountry());
+        Optional<Location> location = locationRepository.findById(locationId);
 
-        if(location != null) {
+        if(location.isPresent()) {
             Optional<FavouriteLocation> existedLocation =
-                    appUser.getFavouriteLocations().stream().filter(fLocation -> fLocation.getLocation().equals(location)).findFirst();
+                    appUser.getFavouriteLocations().stream().filter(fLocation -> fLocation.getLocation().equals(location.get())).findFirst();
 
             if(existedLocation.isPresent()) {
-                locationRepository.delete(location);
+                locationRepository.delete(location.get());
             }
 
-            return locationDto;
+            return ModelToDto.toLocationDto(location.get());
         }
-        throw new LocationNotFoundException(locationDto.getCity() + " " + locationDto.getRegion() + " " + locationDto.getCountry());
+        throw new LocationNotFoundException(String.valueOf(locationId));
     }
 
 }

@@ -16,12 +16,12 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateUserContactsRequest {
     @NotEmpty
-    String email;
+    private String email;
 
     @NotEmpty
-    String phoneNumber;
+    private String phoneNumber;
 
     @NotEmpty
-    List<String> contacts;
+    private List<String> contacts;
 
 }

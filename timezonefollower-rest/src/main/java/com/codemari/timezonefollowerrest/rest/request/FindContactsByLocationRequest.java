@@ -12,22 +12,13 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserAuthenticateRequest {
+public class FindContactsByLocationRequest {
+    @NotEmpty
+    private Long location_id;
+
     @NotEmpty
     private String email;
 
     @NotEmpty
     private String phoneNumber;
-
-    private String name;
-
-    @NotEmpty
-    private String city;
-    @NotEmpty
-    private String country;
-    @NotEmpty
-    private String region;
-    @NotEmpty
-    private String timeZone;
-
 }
