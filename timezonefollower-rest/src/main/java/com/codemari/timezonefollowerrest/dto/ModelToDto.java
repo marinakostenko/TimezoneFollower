@@ -16,6 +16,8 @@ public class ModelToDto {
                 .setId(appUser.getId())
                 .setName(appUser.getName())
                 .setEmail(appUser.getEmail())
+                .setUserName(appUser.getUsername())
+                .setPassword(appUser.getPassword())
                 .setPhoneNumber(appUser.getPhoneNumber())
                 .setIsActive(appUser.getIsActive())
                 .setCity(appUser.getLocation().getCity())

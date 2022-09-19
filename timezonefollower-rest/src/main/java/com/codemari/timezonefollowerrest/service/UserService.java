@@ -36,6 +36,7 @@ public class UserService {
     public UserService() {
     }
 
+    @Transactional
     public AppUserDto addUser(AppUserDto userDto) {
         AppUser user = userRepository.findByPhoneNumber(userDto.getPhoneNumber());
         if (user == null || !user.getIsActive()) {
@@ -45,6 +46,8 @@ public class UserService {
                 user = new AppUser()
                         .setName(userDto.getName())
                         .setEmail(userDto.getEmail())
+                        .setUsername(userDto.getEmail())
+                        .setPassword(userDto.getPassword())
                         .setLocation(location)
                         .setPhoneNumber(userDto.getPhoneNumber())
                         .setIsActive(true);
@@ -52,6 +55,8 @@ public class UserService {
                 user
                         .setName(userDto.getName())
                         .setEmail(userDto.getEmail())
+                        .setUsername(userDto.getEmail())
+                        .setPassword(userDto.getPassword())
                         .setLocation(location)
                         .setIsActive(true);
             }
@@ -62,7 +67,6 @@ public class UserService {
         throw new DuplicatedUserException(userDto.getPhoneNumber());
     }
 
-    @Transactional
     public AppUserDto findUserByPhoneNumber(String phoneNumber) {
         AppUser appUser = userRepository.findByPhoneNumber(phoneNumber);
         if (appUser != null) {
@@ -81,6 +85,7 @@ public class UserService {
         throw new UserNotFoundException(String.valueOf(id));
     }
 
+    @Transactional
     public AppUserDto updateUser(AppUserDto userDtoUpdated) {
         Optional<AppUser> user = Optional.ofNullable(userRepository.findByPhoneNumber(userDtoUpdated.getPhoneNumber()));
 
@@ -99,6 +104,7 @@ public class UserService {
         throw new UserNotFoundException(userDtoUpdated.getPhoneNumber());
     }
 
+    @Transactional
     public List<AppUserDto> updateUserContacts(AppUserDto appUserDto, List<String> contacts) {
         Optional<AppUser> user = Optional.ofNullable(userRepository.findByPhoneNumber(appUserDto.getPhoneNumber()));
         List<AppUserDto> contactList = new ArrayList<>();

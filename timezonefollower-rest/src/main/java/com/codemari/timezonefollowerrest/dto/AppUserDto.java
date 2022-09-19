@@ -18,7 +18,9 @@ import java.util.List;
 public class AppUserDto {
     private Long id;
     private String email;
+    private String userName;
     private String name;
+    private String password;
     private String phoneNumber;
     private Boolean isActive;
     private String city;

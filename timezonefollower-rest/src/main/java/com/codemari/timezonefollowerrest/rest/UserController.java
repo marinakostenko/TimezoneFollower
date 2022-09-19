@@ -2,7 +2,6 @@ package com.codemari.timezonefollowerrest.rest;
 
 import com.codemari.timezonefollowerrest.dto.AppUserDto;
 import com.codemari.timezonefollowerrest.rest.request.UpdateUserContactsRequest;
-import com.codemari.timezonefollowerrest.rest.request.UserAuthenticateRequest;
 import com.codemari.timezonefollowerrest.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,23 +20,23 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/authenticate")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "Create a new user")
-    public Long authenticate(@RequestBody @Valid UserAuthenticateRequest userAuthenticateRequest) {
-        AppUserDto userDto = new AppUserDto()
-                .setEmail(userAuthenticateRequest.getEmail())
-                .setName(userAuthenticateRequest.getName() == null ? "user name" : userAuthenticateRequest.getName())
-                .setPhoneNumber(userAuthenticateRequest.getPhoneNumber())
-                .setCity(userAuthenticateRequest.getCity())
-                .setCountry(userAuthenticateRequest.getCountry())
-                .setRegion(userAuthenticateRequest.getRegion())
-                .setTimeZone(userAuthenticateRequest.getTimeZone());
-
-        userDto = this.userService.addUser(userDto);
-
-        return userDto.getId();
-    }
+//    @PostMapping("/authenticate")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ApiOperation(value = "Create a new user")
+//    public Long authenticate(@RequestBody @Valid UserAuthenticateRequest userAuthenticateRequest) {
+//        AppUserDto userDto = new AppUserDto()
+//                .setEmail(userAuthenticateRequest.getEmail())
+//                .setName(userAuthenticateRequest.getName() == null ? "user name" : userAuthenticateRequest.getName())
+//                .setPhoneNumber(userAuthenticateRequest.getPhoneNumber())
+//                .setCity(userAuthenticateRequest.getCity())
+//                .setCountry(userAuthenticateRequest.getCountry())
+//                .setRegion(userAuthenticateRequest.getRegion())
+//                .setTimeZone(userAuthenticateRequest.getTimeZone());
+//
+//        userDto = this.userService.addUser(userDto);
+//
+//        return userDto.getId();
+//    }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
