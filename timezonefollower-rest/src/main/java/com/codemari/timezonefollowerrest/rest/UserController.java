@@ -1,6 +1,7 @@
 package com.codemari.timezonefollowerrest.rest;
 
 import com.codemari.timezonefollowerrest.dto.AppUserDto;
+import com.codemari.timezonefollowerrest.rest.request.CreateUserRequest;
 import com.codemari.timezonefollowerrest.rest.request.UpdateUserContactsRequest;
 import com.codemari.timezonefollowerrest.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -77,15 +78,15 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Update user", authorizations = {@Authorization(value = "apiKey")})
     public AppUserDto updateUser(@ApiParam(value = "The phone number and email of existing user", required = true)
-                                 @RequestBody @Valid UserAuthenticateRequest userAuthenticateRequest) {
+                                 @RequestBody @Valid CreateUserRequest userAuthenticateRequest) {
         AppUserDto userDto = new AppUserDto()
-                .setEmail(userAuthenticateRequest.getEmail())
-                .setName(userAuthenticateRequest.getName() == null ? "user name" : userAuthenticateRequest.getName())
-                .setPhoneNumber(userAuthenticateRequest.getPhoneNumber())
-                .setCity(userAuthenticateRequest.getCity())
-                .setCountry(userAuthenticateRequest.getCountry())
-                .setRegion(userAuthenticateRequest.getRegion())
-                .setTimeZone(userAuthenticateRequest.getTimeZone());
+                .setEmail(userAuthenticateRequest.username())
+                .setName(userAuthenticateRequest.name() == null ? "user name" : userAuthenticateRequest.name())
+                .setPhoneNumber(userAuthenticateRequest.phoneNumber())
+                .setCity(userAuthenticateRequest.city())
+                .setCountry(userAuthenticateRequest.country())
+                .setRegion(userAuthenticateRequest.region())
+                .setTimeZone(userAuthenticateRequest.timeZone());
 
         userDto = this.userService.updateUser(userDto);
 
