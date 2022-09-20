@@ -13,13 +13,9 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -53,12 +49,17 @@ public class SecurityConfiguration {
     private UserRepository userRepository;
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(
                         userEmail ->
                                 userRepository.findByEmail(userEmail))
-                .passwordEncoder(bCryptPasswordEncoder)
+                .passwordEncoder(passwordEncoder())
                 .and()
                 .build();
     }
@@ -82,21 +83,23 @@ public class SecurityConfiguration {
                 .permitAll()
                 .antMatchers(format("%s/**", swaggerPath))
                 .permitAll()
-                .antMatchers("/api/public/**")
+                .antMatchers("api/public/**")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/user/**")
+                .antMatchers("api/public/**")
                 .permitAll()
-                .antMatchers(HttpMethod.POST, "/api/user/**")
+                .antMatchers(HttpMethod.GET, "api/user/**")
                 .permitAll()
-                .antMatchers(HttpMethod.PUT, "/api/user")
+                .antMatchers(HttpMethod.POST, "api/user/**")
                 .permitAll()
-                .antMatchers(HttpMethod.DELETE, "/api/delete")
+                .antMatchers(HttpMethod.PUT, "api/user")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/location/**")
+                .antMatchers(HttpMethod.DELETE, "api/user")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/location")
+                .antMatchers(HttpMethod.GET, "api/location/**")
                 .permitAll()
-                .antMatchers(HttpMethod.POST, "/api/location/favourite/**")
+                .antMatchers(HttpMethod.GET, "api/location")
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "api/location/favourite/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -119,10 +122,6 @@ public class SecurityConfiguration {
         return NimbusJwtDecoder.withPublicKey(this.rsaPublicKey).build();
     }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public CorsFilter corsFilter() {

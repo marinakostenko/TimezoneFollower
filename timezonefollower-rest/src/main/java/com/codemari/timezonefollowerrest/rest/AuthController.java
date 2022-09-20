@@ -28,7 +28,7 @@ import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 
 @RestController
-@RequestMapping("/api/public")
+@RequestMapping("api/public")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthenticationManager authenticationManager;
@@ -68,7 +68,7 @@ public class AuthController {
                 .body(ModelToDto.toAppUserDto(user));
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public AppUserDto register(@RequestBody @Valid CreateUserRequest createUserRequest) {
         AppUserDto userDto = new AppUserDto()
                 .setEmail(createUserRequest.username())
