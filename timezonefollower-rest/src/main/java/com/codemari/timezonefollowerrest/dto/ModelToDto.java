@@ -12,16 +12,22 @@ import java.util.stream.Collectors;
 public class ModelToDto {
     public static AppUserDto toAppUserDto(AppUser appUser) {
 
-        return new AppUserDto()
+        AppUserDto appUserDto =  new AppUserDto()
                 .setId(appUser.getId())
                 .setName(appUser.getName())
                 .setEmail(appUser.getEmail())
                 .setPhoneNumber(appUser.getPhoneNumber())
-                .setIsActive(appUser.getIsActive())
-                .setCity(appUser.getLocation().getCity())
-                .setTimeZone(appUser.getLocation().getTimeZone())
-                .setCountry(appUser.getLocation().getCountry())
-                .setRegion(appUser.getLocation().getRegion());
+                .setIsActive(appUser.getIsActive());
+
+        if(appUser.getLocation() != null) {
+            appUserDto
+                    .setCity(appUser.getLocation().getCity())
+                    .setTimeZone(appUser.getLocation().getTimeZone())
+                    .setCountry(appUser.getLocation().getCountry())
+                    .setRegion(appUser.getLocation().getRegion());
+        }
+
+        return appUserDto;
     }
 
     public static LocationDto toLocationDto(Location location) {

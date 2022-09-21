@@ -1,18 +1,12 @@
 package com.codemari.timezonefollowerrest.rest;
 
-import com.codemari.timezonefollowerrest.db.LoadDataBase;
 import com.codemari.timezonefollowerrest.dto.AppUserDto;
-import com.codemari.timezonefollowerrest.dto.ModelToDto;
-import com.codemari.timezonefollowerrest.model.AppUser;
-import com.codemari.timezonefollowerrest.rest.request.AuthRequest;
-import com.codemari.timezonefollowerrest.rest.request.CreateUserRequest;
+import com.codemari.timezonefollowerrest.dto.request.CreateUserRequest;
 import com.codemari.timezonefollowerrest.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 //import org.springframework.security.authentication.AuthenticationManager;
 //import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 //import org.springframework.security.core.GrantedAuthority;
@@ -77,7 +71,7 @@ public class AuthController {
     @PostMapping("/register")
     public AppUserDto register(@RequestBody @Valid CreateUserRequest createUserRequest) {
         AppUserDto userDto = new AppUserDto()
-                .setEmail(createUserRequest.username())
+                .setEmail(createUserRequest.email())
                 .setName(createUserRequest.name() == null ? "user name" : createUserRequest.name())
                 .setPhoneNumber(createUserRequest.phoneNumber())
                 .setCity(createUserRequest.city())

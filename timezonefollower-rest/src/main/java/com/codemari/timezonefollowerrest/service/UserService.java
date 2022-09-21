@@ -91,11 +91,15 @@ public class UserService {
         Optional<AppUser> user = userRepository.findByEmail(userDtoUpdated.getEmail());
 
         if (user.isPresent()) {
+            Optional<Location> location = locationRepository.findByCityAndRegionAndCountry(userDtoUpdated.getCity(), userDtoUpdated.getRegion(), userDtoUpdated.getCountry());
+
             AppUser userModel = user.get();
             userModel
                     .setName(userDtoUpdated.getName())
                     .setEmail(userDtoUpdated.getEmail())
                     .setPhoneNumber(userDtoUpdated.getPhoneNumber());
+
+            location.ifPresent(userModel::setLocation);
 
             userRepository.save(userModel);
 
