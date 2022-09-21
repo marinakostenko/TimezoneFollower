@@ -13,7 +13,7 @@ import com.codemari.timezonefollowerrest.model.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,46 +34,44 @@ public class UserService {
     @Autowired
     private LocationRepository locationRepository;
 
-    private PasswordEncoder passwordEncoder;
+   // private PasswordEncoder passwordEncoder;
 
     public UserService() {
     }
 
     @Transactional
     public AppUserDto addUser(AppUserDto userDto) {
-        AppUser user = userRepository.findByPhoneNumber(userDto.getPhoneNumber());
-        if (user == null || !user.getIsActive()) {
-            Location location = locationRepository.findByCityAndRegionAndCountry(userDto.getCity(), userDto.getRegion(), userDto.getCountry());
+        Optional<AppUser> user = userRepository.findByPhoneNumber(userDto.getPhoneNumber());
+        AppUser newUser;
+        if (user.isEmpty() || !user.get().getIsActive()) {
+            Optional<Location> location = locationRepository.findByCityAndRegionAndCountry(userDto.getCity(), userDto.getRegion(), userDto.getCountry());
 
-            if (user == null) {
-                user = new AppUser()
+            if (user.isEmpty()) {
+                newUser = new AppUser()
                         .setName(userDto.getName())
                         .setEmail(userDto.getEmail())
-                        .setUsername(userDto.getEmail())
-                        .setPassword(passwordEncoder.encode(userDto.getPassword()))
-                        .setLocation(location)
                         .setPhoneNumber(userDto.getPhoneNumber())
                         .setIsActive(true);
+                location.ifPresent(newUser::setLocation);
             } else {
-                user
+                newUser = user.get();
+                newUser
                         .setName(userDto.getName())
                         .setEmail(userDto.getEmail())
-                        .setUsername(userDto.getEmail())
-                        .setPassword(passwordEncoder.encode(userDto.getPassword()))
-                        .setLocation(location)
                         .setIsActive(true);
+                location.ifPresent(newUser::setLocation);
             }
 
-            return ModelToDto.toAppUserDto(userRepository.save(user));
+            return ModelToDto.toAppUserDto(userRepository.save(newUser));
         }
 
         throw new DuplicatedUserException(userDto.getPhoneNumber());
     }
 
     public AppUserDto findUserByPhoneNumber(String phoneNumber) {
-        AppUser appUser = userRepository.findByPhoneNumber(phoneNumber);
-        if (appUser != null) {
-            return ModelToDto.toAppUserDto(appUser);
+        Optional<AppUser> appUser = userRepository.findByPhoneNumber(phoneNumber);
+        if (appUser.isPresent()) {
+            return ModelToDto.toAppUserDto(appUser.get());
         }
 
         throw new UserNotFoundException(phoneNumber);
@@ -90,7 +88,7 @@ public class UserService {
 
     @Transactional
     public AppUserDto updateUser(AppUserDto userDtoUpdated) {
-        Optional<AppUser> user = Optional.ofNullable(userRepository.findByPhoneNumber(userDtoUpdated.getPhoneNumber()));
+        Optional<AppUser> user = userRepository.findByEmail(userDtoUpdated.getEmail());
 
         if (user.isPresent()) {
             AppUser userModel = user.get();
@@ -109,23 +107,26 @@ public class UserService {
 
     @Transactional
     public List<AppUserDto> updateUserContacts(AppUserDto appUserDto, List<String> contacts) {
-        Optional<AppUser> user = Optional.ofNullable(userRepository.findByPhoneNumber(appUserDto.getPhoneNumber()));
+        Optional<AppUser> user = userRepository.findByEmail(appUserDto.getEmail());
         List<AppUserDto> contactList = new ArrayList<>();
         if (user.isPresent()) {
             for (String number : contacts) {
-                AppUser contactAppUser = userRepository.findByPhoneNumber(number);
-                if (contactAppUser == null) {
-                    contactAppUser = new AppUser().setPhoneNumber(number).setIsActive(false);
-                    userRepository.save(contactAppUser);
+                Optional<AppUser> contactAppUser = userRepository.findByPhoneNumber(number);
+                if (contactAppUser.isEmpty()) {
+                    contactAppUser = Optional.ofNullable(new AppUser().setPhoneNumber(number).setIsActive(false));
+                    contactAppUser.ifPresent(appUser -> userRepository.save(appUser));
                 }
 
-                Contact contact = contactRepository.findByContactUserAndMainUser(contactAppUser, user.get());
+                if (contactAppUser.isPresent()) {
+                    Optional<Contact> contact = contactRepository.findByContactUserAndMainUser(contactAppUser.get().getId(), user.get());
 
-                if (contact == null) {
-                    contact = new Contact().setContactUser(contactAppUser.getId()).setMainUser(user.get());
+                    if (contact.isEmpty()) {
+                        contact = Optional.ofNullable(new Contact().setContactUser(contactAppUser.get().getId()).setMainUser(user.get()));
+                    }
+
+                    contact.ifPresent(cont -> contactRepository.save(cont));
+                    contactList.add(ModelToDto.toAppUserDto(contactAppUser.get()));
                 }
-                contactRepository.save(contact);
-                contactList.add(ModelToDto.toAppUserDto(contactAppUser));
             }
 
             return contactList;
@@ -135,7 +136,7 @@ public class UserService {
     }
 
     public List<AppUserDto> getUserContacts(AppUserDto appUserDto) {
-        Optional<AppUser> user = Optional.ofNullable(userRepository.findByPhoneNumber(appUserDto.getPhoneNumber()));
+        Optional<AppUser> user = userRepository.findByEmail(appUserDto.getEmail());
         List<AppUserDto> contactList = new ArrayList<>();
 
         if (user.isPresent()) {
@@ -154,7 +155,7 @@ public class UserService {
     }
 
     public AppUserDto deleteUser(AppUserDto appUserDto) {
-        Optional<AppUser> user = Optional.ofNullable(userRepository.findByPhoneNumber(appUserDto.getPhoneNumber()));
+        Optional<AppUser> user = userRepository.findByPhoneNumber(appUserDto.getPhoneNumber());
         if (user.isPresent()) {
             userRepository.deleteById(user.get().getId());
             return ModelToDto.toAppUserDto(user.get());

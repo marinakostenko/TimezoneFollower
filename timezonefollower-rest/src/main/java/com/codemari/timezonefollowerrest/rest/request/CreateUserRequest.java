@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 
 public record CreateUserRequest(
         @NotNull @Email String username,
-        @NotNull String password,
+        String password,
         @NotNull String phoneNumber,
         String name,
         String country,
