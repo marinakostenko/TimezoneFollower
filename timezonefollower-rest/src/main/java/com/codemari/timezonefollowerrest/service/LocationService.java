@@ -143,9 +143,7 @@ public class LocationService {
             Optional<FavouriteLocation> existedLocation =
                     appUser.get().getFavouriteLocations().stream().filter(fLocation -> fLocation.getLocation().equals(location.get().getId())).findFirst();
 
-            if(existedLocation.isPresent()) {
-                locationRepository.delete(location.get());
-            }
+            existedLocation.ifPresent(favouriteLocation -> favouriteLocationRepository.delete(favouriteLocation));
 
             return ModelToDto.toLocationDto(location.get());
         }

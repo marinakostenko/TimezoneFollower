@@ -2,7 +2,6 @@ package com.codemari.timezonefollowerrest.rest;
 
 import com.codemari.timezonefollowerrest.dto.AppUserDto;
 import com.codemari.timezonefollowerrest.dto.request.CreateUserRequest;
-import com.codemari.timezonefollowerrest.dto.request.FindUserContactsRequest;
 import com.codemari.timezonefollowerrest.dto.request.UpdateUserContactsRequest;
 import com.codemari.timezonefollowerrest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,20 +38,20 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public AppUserDto getUserById(@PathVariable Long id) {
-        return this.userService.findUserById(id);
+    public AppUserDto getUserById(@PathVariable String id) {
+        return this.userService.findUserById(Long.parseLong(id));
     }
 
-    @GetMapping("/{number}")
+    @GetMapping("/phone/{userNumber}")
     @ResponseStatus(HttpStatus.OK)
-    public AppUserDto getUserByPhoneNumber(@PathVariable String number) {
-        return this.userService.findUserByPhoneNumber(number);
+    public AppUserDto getUserByPhoneNumber(@PathVariable String userNumber) {
+        return this.userService.findUserByPhoneNumber(userNumber);
     }
 
-    @GetMapping("/contacts")
+    @GetMapping("/contacts/{userNumber}/{userEmail}")
     @ResponseStatus(HttpStatus.OK)
-    public List<AppUserDto> getUserContacts(@RequestBody @Valid FindUserContactsRequest findUserContactsRequest) {
-        return this.userService.getUserContacts(new AppUserDto().setPhoneNumber(findUserContactsRequest.phoneNumber()).setEmail(findUserContactsRequest.email()));
+    public List<AppUserDto> getUserContacts(@PathVariable String userNumber, @PathVariable String userEmail) {
+        return this.userService.getUserContacts(new AppUserDto().setPhoneNumber(userNumber).setEmail(userEmail));
     }
 
     @PostMapping("/contacts")
@@ -67,7 +66,7 @@ public class UserController {
 
 
     @PutMapping("")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public AppUserDto updateUser(@RequestBody @Valid CreateUserRequest userAuthenticateRequest) {
         AppUserDto userDto = new AppUserDto()
                 .setEmail(userAuthenticateRequest.email())

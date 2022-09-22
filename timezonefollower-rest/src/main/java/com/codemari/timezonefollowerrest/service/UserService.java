@@ -140,6 +140,7 @@ public class UserService {
 
     public List<AppUserDto> getUserContacts(AppUserDto appUserDto) {
         Optional<AppUser> user = userRepository.findByEmail(appUserDto.getEmail());
+
         List<AppUserDto> contactList = new ArrayList<>();
 
         if (user.isPresent()) {

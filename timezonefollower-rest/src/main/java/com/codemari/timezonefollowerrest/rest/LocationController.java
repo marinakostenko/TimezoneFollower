@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @RestController
@@ -25,45 +27,45 @@ public class LocationController {
         return this.locationService.getAllLocations();
     }
 
-    @GetMapping("")
+    @GetMapping("/{city}/{country}/{region}")
     @ResponseStatus(HttpStatus.OK)
-    public LocationDto getLocationByName(@RequestBody @Valid FindLocationRequest locationRequest) {
-        return this.locationService.findLocationByName(locationRequest.city(), locationRequest.country(), locationRequest.region());
+    public LocationDto getLocationByName(@PathVariable String city, @PathVariable String region,     @PathVariable String country) {
+        return this.locationService.findLocationByName(city, region, country);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{locationId}")
     @ResponseStatus(HttpStatus.OK)
-    public LocationDto getLocationById(@PathVariable Long location_id) {
-        return this.locationService.findLocationById(location_id);
+    public LocationDto getLocationById(@PathVariable String locationId) {
+        return this.locationService.findLocationById(Long.parseLong(locationId));
     }
 
-    @GetMapping("/contacts")
+    @GetMapping("/contacts/{locationId}/{userNumber}/{userEmail}")
     @ResponseStatus(HttpStatus.OK)
-    public List<AppUserDto> getContactsByLocation(@RequestBody @Valid FindContactsByLocationRequest contactsByLocationRequest) {
-        return this.locationService.findAllContactsByLocation(contactsByLocationRequest.locationId(),
-                new AppUserDto().setPhoneNumber(contactsByLocationRequest.phoneNumber()).setEmail(contactsByLocationRequest.email()));
+    public List<AppUserDto> getContactsByLocation(@PathVariable String locationId, @PathVariable String userNumber, @PathVariable String userEmail) {
+        return this.locationService.findAllContactsByLocation(Long.parseLong(locationId),
+                new AppUserDto().setPhoneNumber(userNumber).setEmail(userEmail));
     }
 
-    @GetMapping("/favourite")
+    @GetMapping("/favourite/{userNumber}/{userEmail}")
     @ResponseStatus(HttpStatus.OK)
-    public List<LocationDto> getFavouriteLocations(@RequestBody @Valid UserFavouriteLocationsRequest favouriteLocationsRequest) {
+    public List<LocationDto> getFavouriteLocations(@PathVariable String userNumber, @PathVariable String userEmail) {
         return this.locationService
-                .findAllFavouriteLocations(new AppUserDto().setEmail(favouriteLocationsRequest.email()).setPhoneNumber(favouriteLocationsRequest.phoneNumber()));
+                .findAllFavouriteLocations(new AppUserDto().setEmail(userEmail).setPhoneNumber(userNumber));
     }
 
     @PostMapping("/favourite/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public LocationDto addFavouriteLocation(@RequestBody @Valid UserFavouriteLocationsRequest favouriteLocationsRequest,
-                                            @PathVariable Long id) {
+                                            @PathVariable String id) {
 
-        return this.locationService.addFavouriteLocation(new AppUserDto().setEmail(favouriteLocationsRequest.email()).setPhoneNumber(favouriteLocationsRequest.phoneNumber()), id);
+        return this.locationService.addFavouriteLocation(new AppUserDto().setEmail(favouriteLocationsRequest.email()).setPhoneNumber(favouriteLocationsRequest.phoneNumber()), Long.parseLong(id));
     }
 
     @DeleteMapping("/favourite/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public LocationDto deleteFavouriteLocation(@RequestBody @Valid UserFavouriteLocationsRequest favouriteLocationsRequest,
-                                               @PathVariable Long id) {
+                                               @PathVariable String id) {
 
-        return this.locationService.deleteFavouriteLocation(new AppUserDto().setEmail(favouriteLocationsRequest.email()).setPhoneNumber(favouriteLocationsRequest.phoneNumber()), id);
+        return this.locationService.deleteFavouriteLocation(new AppUserDto().setEmail(favouriteLocationsRequest.email()).setPhoneNumber(favouriteLocationsRequest.phoneNumber()), Long.parseLong(id));
     }
 }
