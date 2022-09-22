@@ -12,7 +12,6 @@ public record CreateUserRequest(
         String region,
         String timeZone,
         String city
-
 ) {
     public CreateUserRequest() {
         this(null, null, null, null, null, null, null);

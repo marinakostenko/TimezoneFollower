@@ -36,10 +36,10 @@ public class UserController {
 //        return userDto.getId();
 //    }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public AppUserDto getUserById(@PathVariable String id) {
-        return this.userService.findUserById(Long.parseLong(id));
+    public AppUserDto getUserById(@PathVariable String userId) {
+        return this.userService.findUserById(Long.parseLong(userId));
     }
 
     @GetMapping("/phone/{userNumber}")
@@ -48,20 +48,16 @@ public class UserController {
         return this.userService.findUserByPhoneNumber(userNumber);
     }
 
-    @GetMapping("/contacts/{userNumber}/{userEmail}")
+    @GetMapping("/contacts/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<AppUserDto> getUserContacts(@PathVariable String userNumber, @PathVariable String userEmail) {
-        return this.userService.getUserContacts(new AppUserDto().setPhoneNumber(userNumber).setEmail(userEmail));
+    public List<AppUserDto> getUserContacts(@PathVariable String userId) {
+        return this.userService.getUserContacts(Long.parseLong(userId));
     }
 
     @PostMapping("/contacts")
     @ResponseStatus(HttpStatus.OK)
     public List<AppUserDto> updateUserContacts(@RequestBody @Valid UpdateUserContactsRequest userContactsRequest) {
-        AppUserDto userDto = new AppUserDto()
-                .setEmail(userContactsRequest.email())
-                .setPhoneNumber(userContactsRequest.phoneNumber());
-
-        return this.userService.updateUserContacts(userDto, userContactsRequest.contacts());
+        return this.userService.updateUserContacts(Long.parseLong(userContactsRequest.userId()), userContactsRequest.contacts());
     }
 
 
@@ -82,10 +78,10 @@ public class UserController {
         return userDto;
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@RequestBody @Valid AppUserDto appUserDto) {
-        this.userService.deleteUser(appUserDto);
+    public void deleteUser(String userId) {
+        this.userService.deleteUser(Long.parseLong(userId));
     }
 
 }

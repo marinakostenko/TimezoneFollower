@@ -65,12 +65,12 @@ public class LocationService {
         throw new LocationNotFoundException(String.valueOf(id));
     }
 
-    public List<AppUserDto> findAllContactsByLocation(Long locationId, AppUserDto appUserDto) {
+    public List<AppUserDto> findAllContactsByLocation(Long locationId, Long userId) {
         Optional<Location> location = locationRepository.findById(locationId);
-        Optional<AppUser> appUser = userRepository.findByEmail(appUserDto.getEmail());
+        Optional<AppUser> appUser = userRepository.findById(userId);
 
         if(appUser.isEmpty()) {
-            throw new UserNotFoundException(appUserDto.getEmail());
+            throw new UserNotFoundException(String.valueOf(userId));
         }
 
         if(location.isPresent()) {
@@ -91,11 +91,11 @@ public class LocationService {
         throw new LocationNotFoundException(String.valueOf(locationId));
     }
 
-    public List<LocationDto> findAllFavouriteLocations(AppUserDto appUserDto) {
-        Optional<AppUser> appUser = userRepository.findByEmail(appUserDto.getEmail());
+    public List<LocationDto> findAllFavouriteLocations(Long userId) {
+        Optional<AppUser> appUser = userRepository.findById(userId);
 
         if(appUser.isEmpty()) {
-            throw new UserNotFoundException(appUserDto.getEmail());
+            throw new UserNotFoundException(String.valueOf(userId));
         }
 
         List<LocationDto> ret = new ArrayList<>();
@@ -107,11 +107,11 @@ public class LocationService {
     }
 
     @Transactional
-    public LocationDto addFavouriteLocation(AppUserDto appUserDto, Long locationId) {
-        Optional<AppUser> appUser = userRepository.findByEmail(appUserDto.getEmail());
+    public LocationDto addFavouriteLocation(Long userId, Long locationId) {
+        Optional<AppUser> appUser = userRepository.findById(userId);
 
         if(appUser.isEmpty()) {
-            throw new UserNotFoundException(appUserDto.getEmail());
+            throw new UserNotFoundException(String.valueOf(userId));
         }
 
         Optional<Location> location = locationRepository.findById(locationId);
@@ -131,11 +131,11 @@ public class LocationService {
     }
 
     @Transactional
-    public LocationDto deleteFavouriteLocation(AppUserDto appUserDto, Long locationId) {
-        Optional<AppUser> appUser = userRepository.findByEmail(appUserDto.getEmail());
+    public LocationDto deleteFavouriteLocation(Long userId, Long locationId) {
+        Optional<AppUser> appUser = userRepository.findById(userId);
 
         if(appUser.isEmpty()) {
-            throw new UserNotFoundException(appUserDto.getEmail());
+            throw new UserNotFoundException(String.valueOf(userId));
         }
         Optional<Location> location = locationRepository.findById(locationId);
 

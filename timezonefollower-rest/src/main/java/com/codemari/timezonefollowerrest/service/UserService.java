@@ -109,8 +109,8 @@ public class UserService {
     }
 
     @Transactional
-    public List<AppUserDto> updateUserContacts(AppUserDto appUserDto, List<String> contacts) {
-        Optional<AppUser> user = userRepository.findByEmail(appUserDto.getEmail());
+    public List<AppUserDto> updateUserContacts(Long userId, List<String> contacts) {
+        Optional<AppUser> user = userRepository.findById(userId);
         List<AppUserDto> contactList = new ArrayList<>();
         if (user.isPresent()) {
             for (String number : contacts) {
@@ -135,11 +135,11 @@ public class UserService {
             return contactList;
         }
 
-        throw new UserNotFoundException(appUserDto.getEmail());
+        throw new UserNotFoundException(String.valueOf(userId));
     }
 
-    public List<AppUserDto> getUserContacts(AppUserDto appUserDto) {
-        Optional<AppUser> user = userRepository.findByEmail(appUserDto.getEmail());
+    public List<AppUserDto> getUserContacts(Long userId) {
+        Optional<AppUser> user = userRepository.findById(userId);
 
         List<AppUserDto> contactList = new ArrayList<>();
 
@@ -155,12 +155,12 @@ public class UserService {
             return contactList;
         }
 
-        throw new UserNotFoundException(appUserDto.getEmail());
+        throw new UserNotFoundException(String.valueOf(userId));
     }
 
     @Transactional
-    public AppUserDto deleteUser(AppUserDto appUserDto) {
-        Optional<AppUser> user = userRepository.findByEmail(appUserDto.getEmail());
+    public AppUserDto deleteUser(Long userId) {
+        Optional<AppUser> user = userRepository.findById(userId);
         if (user.isPresent()) {
             if(user.get().getPhoneNumber() != null) {
                 user.get().setIsActive(false);
@@ -171,6 +171,6 @@ public class UserService {
 
             return ModelToDto.toAppUserDto(user.get());
         }
-        throw new UserNotFoundException(appUserDto.getEmail());
+        throw new UserNotFoundException(userId.toString());
     }
 }
