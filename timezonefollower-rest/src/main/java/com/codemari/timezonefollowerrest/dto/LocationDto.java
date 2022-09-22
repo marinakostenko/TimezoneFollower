@@ -7,9 +7,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-import java.util.Set;
-
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -17,9 +14,9 @@ import java.util.Set;
 @NoArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class LocationDto {
+    Long id;
     String city;
     String region;
     String country;
     String timeZone;
-    List<AppUserDto> users;
 }

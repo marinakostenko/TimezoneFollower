@@ -13,7 +13,6 @@ import com.codemari.timezonefollowerrest.model.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +32,6 @@ public class UserService {
 
     @Autowired
     private LocationRepository locationRepository;
-
-   // private PasswordEncoder passwordEncoder;
 
     public UserService() {
     }
@@ -71,6 +68,7 @@ public class UserService {
     public AppUserDto findUserByPhoneNumber(String phoneNumber) {
         Optional<AppUser> appUser = userRepository.findByPhoneNumber(phoneNumber);
         if (appUser.isPresent()) {
+            log.info("User is present {}", appUser.get().getPhoneNumber());
             return ModelToDto.toAppUserDto(appUser.get());
         }
 
@@ -80,6 +78,7 @@ public class UserService {
     public AppUserDto findUserById(Long id) {
         Optional<AppUser> appUser = userRepository.findById(id);
         if (appUser.isPresent()) {
+            log.info("User is present {}", appUser.get().getPhoneNumber());
             return ModelToDto.toAppUserDto(appUser.get());
         }
 
@@ -106,7 +105,7 @@ public class UserService {
             return ModelToDto.toAppUserDto(userModel);
         }
 
-        throw new UserNotFoundException(userDtoUpdated.getPhoneNumber());
+        throw new UserNotFoundException(userDtoUpdated.getEmail());
     }
 
     @Transactional
@@ -136,7 +135,7 @@ public class UserService {
             return contactList;
         }
 
-        throw new UserNotFoundException(appUserDto.getPhoneNumber());
+        throw new UserNotFoundException(appUserDto.getEmail());
     }
 
     public List<AppUserDto> getUserContacts(AppUserDto appUserDto) {
@@ -155,15 +154,22 @@ public class UserService {
             return contactList;
         }
 
-        throw new UserNotFoundException(appUserDto.getPhoneNumber());
+        throw new UserNotFoundException(appUserDto.getEmail());
     }
 
+    @Transactional
     public AppUserDto deleteUser(AppUserDto appUserDto) {
-        Optional<AppUser> user = userRepository.findByPhoneNumber(appUserDto.getPhoneNumber());
+        Optional<AppUser> user = userRepository.findByEmail(appUserDto.getEmail());
         if (user.isPresent()) {
-            userRepository.deleteById(user.get().getId());
+            if(user.get().getPhoneNumber() != null) {
+                user.get().setIsActive(false);
+                userRepository.save(user.get());
+            } else {
+                userRepository.deleteById(user.get().getId());
+            }
+
             return ModelToDto.toAppUserDto(user.get());
         }
-        throw new UserNotFoundException(appUserDto.getPhoneNumber());
+        throw new UserNotFoundException(appUserDto.getEmail());
     }
 }

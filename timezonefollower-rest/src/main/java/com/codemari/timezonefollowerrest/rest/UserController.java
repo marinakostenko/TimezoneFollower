@@ -2,7 +2,7 @@ package com.codemari.timezonefollowerrest.rest;
 
 import com.codemari.timezonefollowerrest.dto.AppUserDto;
 import com.codemari.timezonefollowerrest.dto.request.CreateUserRequest;
-import com.codemari.timezonefollowerrest.dto.request.FindContactsRequest;
+import com.codemari.timezonefollowerrest.dto.request.FindUserContactsRequest;
 import com.codemari.timezonefollowerrest.dto.request.UpdateUserContactsRequest;
 import com.codemari.timezonefollowerrest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +45,14 @@ public class UserController {
 
     @GetMapping("/{number}")
     @ResponseStatus(HttpStatus.OK)
-    public AppUserDto getUserByPhoneNumber(@PathVariable String phoneNumber) {
-        return this.userService.findUserByPhoneNumber(phoneNumber);
+    public AppUserDto getUserByPhoneNumber(@PathVariable String number) {
+        return this.userService.findUserByPhoneNumber(number);
     }
 
     @GetMapping("/contacts")
     @ResponseStatus(HttpStatus.OK)
-    public List<AppUserDto> getUserContacts(FindContactsRequest findContactsRequest) {
-        return this.userService.getUserContacts(new AppUserDto().setPhoneNumber(findContactsRequest.phoneNumber()).setEmail(findContactsRequest.email()));
+    public List<AppUserDto> getUserContacts(@RequestBody @Valid FindUserContactsRequest findUserContactsRequest) {
+        return this.userService.getUserContacts(new AppUserDto().setPhoneNumber(findUserContactsRequest.phoneNumber()).setEmail(findUserContactsRequest.email()));
     }
 
     @PostMapping("/contacts")

@@ -4,6 +4,7 @@ import com.codemari.timezonefollowerrest.dto.AppUserDto;
 import com.codemari.timezonefollowerrest.dto.LocationDto;
 import com.codemari.timezonefollowerrest.dto.request.FindContactsByLocationRequest;
 import com.codemari.timezonefollowerrest.dto.request.FindLocationRequest;
+import com.codemari.timezonefollowerrest.dto.request.UserFavouriteLocationsRequest;
 import com.codemari.timezonefollowerrest.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,23 +46,24 @@ public class LocationController {
 
     @GetMapping("/favourite")
     @ResponseStatus(HttpStatus.OK)
-    public List<LocationDto> getFavouriteLocations(AppUserDto appUserDto) {
-        return this.locationService.findAllFavouriteLocations(appUserDto);
+    public List<LocationDto> getFavouriteLocations(@RequestBody @Valid UserFavouriteLocationsRequest favouriteLocationsRequest) {
+        return this.locationService
+                .findAllFavouriteLocations(new AppUserDto().setEmail(favouriteLocationsRequest.email()).setPhoneNumber(favouriteLocationsRequest.phoneNumber()));
     }
 
     @PostMapping("/favourite/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public LocationDto addFavouriteLocation(AppUserDto appUserDto,
+    public LocationDto addFavouriteLocation(@RequestBody @Valid UserFavouriteLocationsRequest favouriteLocationsRequest,
                                             @PathVariable Long id) {
 
-        return this.locationService.addFavouriteLocation(appUserDto, id);
+        return this.locationService.addFavouriteLocation(new AppUserDto().setEmail(favouriteLocationsRequest.email()).setPhoneNumber(favouriteLocationsRequest.phoneNumber()), id);
     }
 
     @DeleteMapping("/favourite/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public LocationDto deleteFavouriteLocation(AppUserDto appUserDto,
+    public LocationDto deleteFavouriteLocation(@RequestBody @Valid UserFavouriteLocationsRequest favouriteLocationsRequest,
                                                @PathVariable Long id) {
 
-        return this.locationService.deleteFavouriteLocation(appUserDto, id);
+        return this.locationService.deleteFavouriteLocation(new AppUserDto().setEmail(favouriteLocationsRequest.email()).setPhoneNumber(favouriteLocationsRequest.phoneNumber()), id);
     }
 }
