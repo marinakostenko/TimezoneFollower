@@ -1,5 +1,6 @@
 package com.codemari.timezonefollowerrest.rest;
 
+import com.codemari.timezonefollowerrest.exception.DuplicatedFavouriteLocationException;
 import com.codemari.timezonefollowerrest.exception.DuplicatedUserException;
 import com.codemari.timezonefollowerrest.exception.LocationNotFoundException;
 import com.codemari.timezonefollowerrest.exception.UserNotFoundException;
@@ -63,6 +64,15 @@ public class ExceptionHandlerAdvice {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ApiCallError<>("Location not found exception", List.of(e.getMessage())));
+    }
+
+    @ExceptionHandler(DuplicatedFavouriteLocationException.class)
+    public ResponseEntity<ApiCallError<String>> duplicatedFavouriteLocationExceptionHandler(
+            HttpServletRequest request, DuplicatedFavouriteLocationException e) {
+        logger.error(request.getRequestURI() + " " + e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiCallError<>("Duplicated favourite location exception", List.of(e.getMessage())));
     }
 
     @ExceptionHandler(ValidationException.class)

@@ -16,7 +16,9 @@ import lombok.experimental.Accessors;
 public class LocationDto {
     Long id;
     String city;
-    String region;
     String country;
-    String timeZone;
+    String timezone;
+    String countryCode;
+    Double lat;
+    Double lon;
 }

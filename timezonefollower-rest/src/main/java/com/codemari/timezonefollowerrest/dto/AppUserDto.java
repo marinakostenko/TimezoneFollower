@@ -7,8 +7,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -23,6 +21,5 @@ public class AppUserDto {
     private Boolean isActive;
     private String city;
     private String country;
-    private String region;
     private String timeZone;
 }

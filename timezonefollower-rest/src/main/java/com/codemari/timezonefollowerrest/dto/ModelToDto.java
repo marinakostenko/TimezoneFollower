@@ -16,9 +16,8 @@ public class ModelToDto {
         if(appUser.getLocation() != null) {
             appUserDto
                     .setCity(appUser.getLocation().getCity())
-                    .setTimeZone(appUser.getLocation().getTimeZone())
                     .setCountry(appUser.getLocation().getCountry())
-                    .setRegion(appUser.getLocation().getRegion());
+                    .setTimeZone(appUser.getLocation().getTimezone());
         }
 
         return appUserDto;
@@ -29,13 +28,10 @@ public class ModelToDto {
                 .setId(location.getId())
                 .setCity(location.getCity())
                 .setCountry(location.getCountry())
-                .setRegion(location.getRegion())
-                .setTimeZone(location.getTimeZone());
-//                .setUsers(new ArrayList<>(
-//                        location.getUsers().stream()
-//                                .map(user -> new ModelMapper().map(user, AppUserDto.class))
-//                                .collect(Collectors.toList())
-//                ));
+                .setCountryCode(location.getCountryCode())
+                .setTimezone(location.getTimezone())
+                .setLat(location.getLatitude())
+                .setLon(location.getLongitude());
     }
 
 

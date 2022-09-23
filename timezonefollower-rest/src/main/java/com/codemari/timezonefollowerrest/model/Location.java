@@ -4,11 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.apache.catalina.User;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "location")
@@ -22,19 +20,24 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column()
+    @Column
     private String city;
 
-    @Column()
-    private String region;
-
-    @Column()
+    @Column
     private String country;
 
     @Column
-    private String timeZone;
+    private String countryCode;
+
+    @Column
+    private String timezone;
+
+    @Column
+    private Double latitude;
+
+    @Column
+    private Double longitude;
 
     @OneToMany(mappedBy = "location")
     private List<AppUser> users;
-
 }

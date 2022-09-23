@@ -21,10 +21,16 @@ public class LocationController {
         return this.locationService.getAllLocations();
     }
 
-    @GetMapping("/{city}/{country}/{region}")
+    @GetMapping("name/{city}/{country}")
     @ResponseStatus(HttpStatus.OK)
-    public LocationDto getLocationByName(@PathVariable String city, @PathVariable String region, @PathVariable String country) {
-        return this.locationService.findLocationByName(city, region, country);
+    public LocationDto getLocationByName(@PathVariable String city, @PathVariable String country) {
+        return this.locationService.findLocationByName(city, country);
+    }
+
+    @GetMapping("coordinates/{latitude}/{longitude}")
+    @ResponseStatus(HttpStatus.OK)
+    public LocationDto getLocationByCoordinates(@PathVariable String latitude, @PathVariable String longitude) {
+        return this.locationService.findLocationByCoordinates(Double.parseDouble(latitude), Double.parseDouble(longitude));
     }
 
     @GetMapping("/{locationId}")
@@ -33,9 +39,9 @@ public class LocationController {
         return this.locationService.findLocationById(Long.parseLong(locationId));
     }
 
-    @GetMapping("/contacts/{locationId}/{userId}")
+    @GetMapping("/contacts/{userId}/{locationId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<AppUserDto> getContactsByLocation(@PathVariable String locationId, @PathVariable String userId) {
+    public List<AppUserDto> getContactsByLocation(@PathVariable String userId, @PathVariable String locationId) {
         return this.locationService.findAllContactsByLocation(Long.parseLong(locationId), Long.parseLong(userId));
     }
 

@@ -6,6 +6,7 @@ import com.codemari.timezonefollowerrest.dao.UserRepository;
 import com.codemari.timezonefollowerrest.dto.AppUserDto;
 import com.codemari.timezonefollowerrest.dto.ModelToDto;
 import com.codemari.timezonefollowerrest.exception.DuplicatedUserException;
+import com.codemari.timezonefollowerrest.exception.LocationNotFoundException;
 import com.codemari.timezonefollowerrest.exception.UserNotFoundException;
 import com.codemari.timezonefollowerrest.model.AppUser;
 import com.codemari.timezonefollowerrest.model.Contact;
@@ -41,7 +42,7 @@ public class UserService {
         Optional<AppUser> user = userRepository.findByPhoneNumber(userDto.getPhoneNumber());
         AppUser newUser;
         if (user.isEmpty() || !user.get().getIsActive()) {
-            Optional<Location> location = locationRepository.findByCityAndRegionAndCountry(userDto.getCity(), userDto.getRegion(), userDto.getCountry());
+            Optional<Location> location = locationRepository.findByCityAndCountry(userDto.getCity(), userDto.getCountry());
 
             if (user.isEmpty()) {
                 newUser = new AppUser()
@@ -90,7 +91,7 @@ public class UserService {
         Optional<AppUser> user = userRepository.findByEmail(userDtoUpdated.getEmail());
 
         if (user.isPresent()) {
-            Optional<Location> location = locationRepository.findByCityAndRegionAndCountry(userDtoUpdated.getCity(), userDtoUpdated.getRegion(), userDtoUpdated.getCountry());
+            Optional<Location> location = locationRepository.findByCityAndCountry(userDtoUpdated.getCity(), userDtoUpdated.getCountry());
 
             AppUser userModel = user.get();
             userModel
@@ -106,6 +107,28 @@ public class UserService {
         }
 
         throw new UserNotFoundException(userDtoUpdated.getEmail());
+    }
+
+
+    @Transactional
+    public AppUserDto updateUserLocation(Long userId, Double latitude, Double longitude) {
+        Optional<AppUser> user = userRepository.findById(userId);
+
+        if (user.isPresent()) {
+            Optional<Location> location = locationRepository.findByCoordinates(latitude, longitude);
+
+            if(location.isPresent()) {
+                user.get().setLocation(location.get());
+
+                userRepository.save(user.get());
+
+                return ModelToDto.toAppUserDto(user.get());
+            } else {
+                throw new LocationNotFoundException(latitude + " " + longitude);
+            }
+        }
+
+        throw new UserNotFoundException(String.valueOf(userId));
     }
 
     @Transactional

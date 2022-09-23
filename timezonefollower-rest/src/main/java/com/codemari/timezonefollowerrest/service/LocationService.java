@@ -6,6 +6,7 @@ import com.codemari.timezonefollowerrest.dao.UserRepository;
 import com.codemari.timezonefollowerrest.dto.AppUserDto;
 import com.codemari.timezonefollowerrest.dto.LocationDto;
 import com.codemari.timezonefollowerrest.dto.ModelToDto;
+import com.codemari.timezonefollowerrest.exception.DuplicatedFavouriteLocationException;
 import com.codemari.timezonefollowerrest.exception.LocationNotFoundException;
 import com.codemari.timezonefollowerrest.exception.UserNotFoundException;
 import com.codemari.timezonefollowerrest.model.AppUser;
@@ -45,14 +46,24 @@ public class LocationService {
         return locations;
     }
 
-    public LocationDto findLocationByName(String city, String region, String country) {
-        Optional<Location> location = locationRepository.findByCityAndRegionAndCountry(city, region, country);
+    public LocationDto findLocationByName(String city, String country) {
+        Optional<Location> location = locationRepository.findByCityAndCountry(city, country);
 
         if(location.isPresent()) {
             return ModelToDto.toLocationDto(location.get());
         }
 
-        throw new LocationNotFoundException(city + " " + region + " " + country);
+        throw new LocationNotFoundException(city + " " + country);
+    }
+
+    public LocationDto findLocationByCoordinates(Double latitude, Double longitude) {
+        Optional<Location> location = locationRepository.findByCoordinates(latitude, longitude);
+
+        if(location.isPresent()) {
+            return ModelToDto.toLocationDto(location.get());
+        }
+
+        throw new LocationNotFoundException(latitude + " " + longitude);
     }
 
     public LocationDto findLocationById(Long id) {
@@ -124,6 +135,8 @@ public class LocationService {
                 favouriteLocationRepository.save(favouriteLocation);
 
                 return ModelToDto.toLocationDto(location.get());
+            } else {
+                throw new DuplicatedFavouriteLocationException(String.valueOf(existedLocation.get().getLocation()));
             }
         }
 

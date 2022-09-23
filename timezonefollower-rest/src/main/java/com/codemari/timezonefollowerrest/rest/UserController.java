@@ -18,24 +18,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @PostMapping("/authenticate")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @ApiOperation(value = "Create a new user")
-//    public Long authenticate(@RequestBody @Valid UserAuthenticateRequest userAuthenticateRequest) {
-//        AppUserDto userDto = new AppUserDto()
-//                .setEmail(userAuthenticateRequest.getEmail())
-//                .setName(userAuthenticateRequest.getName() == null ? "user name" : userAuthenticateRequest.getName())
-//                .setPhoneNumber(userAuthenticateRequest.getPhoneNumber())
-//                .setCity(userAuthenticateRequest.getCity())
-//                .setCountry(userAuthenticateRequest.getCountry())
-//                .setRegion(userAuthenticateRequest.getRegion())
-//                .setTimeZone(userAuthenticateRequest.getTimeZone());
-//
-//        userDto = this.userService.addUser(userDto);
-//
-//        return userDto.getId();
-//    }
-
     @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public AppUserDto getUserById(@PathVariable String userId) {
@@ -70,12 +52,21 @@ public class UserController {
                 .setPhoneNumber(userAuthenticateRequest.phoneNumber())
                 .setCity(userAuthenticateRequest.city())
                 .setCountry(userAuthenticateRequest.country())
-                .setRegion(userAuthenticateRequest.region())
                 .setTimeZone(userAuthenticateRequest.timeZone());
 
         userDto = this.userService.updateUser(userDto);
 
         return userDto;
+    }
+
+    @PutMapping("/location/{userId}/{latitude}/{longitude}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public AppUserDto updateUserLocation(@PathVariable String userId,
+                                            @PathVariable String latitude,
+                                            @PathVariable String longitude) {
+
+        return this.userService.updateUserLocation(Long.parseLong(userId), Double.parseDouble(latitude),
+                Double.parseDouble(longitude));
     }
 
     @DeleteMapping("/{userId}")

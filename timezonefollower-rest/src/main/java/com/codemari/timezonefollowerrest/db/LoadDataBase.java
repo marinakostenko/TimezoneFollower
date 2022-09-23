@@ -25,24 +25,11 @@ public class LoadDataBase {
     CommandLineRunner initDataBase(UserRepository repository, LocationRepository locationRepository,
                                    ContactRepository contactRepository, FavouriteLocationRepository favouriteLocationRepository) {
         return args -> {
-            Optional<Location> location1 = locationRepository.findByCityAndRegionAndCountry("Vancouver", "BC", "Canada");
-
-            if (location1.isEmpty()) {
-                log.info("Preloading location "
-                        + locationRepository.save(new Location().setCity("Vancouver").setCountry("Canada").setRegion("BC").setTimeZone("America/Vancouver")));
-            }
-
-            Optional<Location> location2 = locationRepository.findByCityAndRegionAndCountry("New York", "New York", "US");
-
-            if(location2.isEmpty()) {
-                log.info("Preloading location "
-                        + locationRepository.save(new Location().setCity("New York").setCountry("US").setRegion("New York").setTimeZone("America/New_York")));
-            }
 
             Optional<AppUser> appUser1 = repository.findByEmail("email@email.com");
             if (appUser1.isEmpty()) {
                 AppUser user1 = new AppUser().setName("Marina").setEmail("email@email.com").setPhoneNumber("123123123");
-                Optional<Location> user1Location = locationRepository.findByCityAndRegionAndCountry("Vancouver", "BC", "Canada");
+                Optional<Location> user1Location = locationRepository.findByCityAndCountry("Vancouver", "Canada");
                 user1Location.ifPresent(user1::setLocation);
 
                 log.info("Preloading user 1 "
@@ -52,7 +39,7 @@ public class LoadDataBase {
             Optional<AppUser> appUser2 = repository.findByEmail("joe@email.com");
             if (appUser2.isEmpty()) {
                 AppUser user2 = new AppUser().setName("Joe").setEmail("joe@email.com").setPhoneNumber("123123124");
-                Optional<Location> user2Location = locationRepository.findByCityAndRegionAndCountry("New York", "New York", "US");
+                Optional<Location> user2Location = locationRepository.findByCityAndCountry("New York City", "United States");
                 user2Location.ifPresent(user2::setLocation);
                 log.info("Preloading user 2 "
                         + repository.save(user2));
@@ -73,7 +60,7 @@ public class LoadDataBase {
 
 
             Optional<AppUser> favLocationUser1 = repository.findByEmail("email@email.com");
-            Optional<Location> favLocation1 = locationRepository.findByCityAndRegionAndCountry("New York", "New York", "US");
+            Optional<Location> favLocation1 = locationRepository.findByCityAndCountry("New York City", "United States");
 
             if(favLocationUser1.isPresent() && favLocation1.isPresent()) {
                Optional<FavouriteLocation> favouriteLocation1 = favouriteLocationRepository.findByLocationAndAppUser(favLocation1.get().getId(), favLocationUser1.get());
