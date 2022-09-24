@@ -57,6 +57,7 @@ public class LocationService {
     }
 
     public LocationDto findLocationByCoordinates(Double latitude, Double longitude) {
+        log.info("lat {} lon {}", latitude, longitude);
         Optional<Location> location = locationRepository.findByCoordinates(latitude, longitude);
 
         if(location.isPresent()) {
