@@ -14,7 +14,7 @@ COPY ./src ./src
 RUN mvn package -DskipTests
 
 # our final base image
-FROM openjdk:18
+FROM openjdk:18-slim
 
 # set deployment directory
 WORKDIR /TimezoneFollower
