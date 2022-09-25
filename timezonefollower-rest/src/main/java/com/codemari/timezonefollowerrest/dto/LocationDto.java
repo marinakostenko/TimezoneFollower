@@ -21,4 +21,5 @@ public class LocationDto {
     String countryCode;
     Double lat;
     Double lon;
+    Integer population;
 }

@@ -19,10 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class LocationService {
@@ -39,11 +37,26 @@ public class LocationService {
     public LocationService() {
     }
 
-    public List<LocationDto> getAllLocations() {
-        List<LocationDto> locations = new ArrayList<>(locationRepository.findAll().stream().map(ModelToDto::toLocationDto).toList());
-        locations.sort(Comparator.comparing(LocationDto::getCity));
+    public List<LocationDto> getAllLocations(String city) {
+        Optional<List<Location>> locationsDtoOptional = locationRepository.findByCityStartingWith(city);
+        if (locationsDtoOptional.isEmpty()) {
+            throw new LocationNotFoundException(city);
+        }
 
-        return locations;
+        List<LocationDto> locations = new ArrayList<>(locationsDtoOptional.get().stream().map(ModelToDto::toLocationDto).toList());
+
+        List<LocationDto> ret = locations.stream().filter(locationDto -> locationDto.getCity().equals(city)).collect(Collectors.toList());
+        locations.sort(Comparator.comparing(LocationDto::getPopulation).reversed());
+
+        int count = 0;
+        while(count < 15 && count < locations.size()) {
+            if(!ret.contains(locations.get(count))) {
+                ret.add(locations.get(count));
+            }
+            count++;
+        }
+
+        return ret;
     }
 
     public LocationDto findLocationByName(String city, String country) {

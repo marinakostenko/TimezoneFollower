@@ -28,7 +28,7 @@ public class LoadDataBase {
 
             Optional<AppUser> appUser1 = repository.findByEmail("email@email.com");
             if (appUser1.isEmpty()) {
-                AppUser user1 = new AppUser().setName("Marina").setEmail("email@email.com").setPhoneNumber("123123123");
+                AppUser user1 = new AppUser().setName("Marina").setEmail("email@email.com").setPhoneNumber("123123123").setIsActive(true);
                 Optional<Location> user1Location = locationRepository.findByCityAndCountry("Vancouver", "Canada");
                 user1Location.ifPresent(user1::setLocation);
 
@@ -38,7 +38,7 @@ public class LoadDataBase {
 
             Optional<AppUser> appUser2 = repository.findByEmail("joe@email.com");
             if (appUser2.isEmpty()) {
-                AppUser user2 = new AppUser().setName("Joe").setEmail("joe@email.com").setPhoneNumber("123123124");
+                AppUser user2 = new AppUser().setName("Joe").setEmail("joe@email.com").setPhoneNumber("123123124").setIsActive(true);
                 Optional<Location> user2Location = locationRepository.findByCityAndCountry("New York City", "United States");
                 user2Location.ifPresent(user2::setLocation);
                 log.info("Preloading user 2 "

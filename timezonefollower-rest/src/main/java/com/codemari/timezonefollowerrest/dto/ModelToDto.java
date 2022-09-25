@@ -31,7 +31,8 @@ public class ModelToDto {
                 .setCountryCode(location.getCountryCode())
                 .setTimezone(location.getTimezone())
                 .setLat(location.getLatitude())
-                .setLon(location.getLongitude());
+                .setLon(location.getLongitude())
+                .setPopulation(location.getPopulation());
     }
 
 

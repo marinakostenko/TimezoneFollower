@@ -15,10 +15,10 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
 
-    @GetMapping("/all")
+    @GetMapping("/all/{cityName}")
     @ResponseStatus(HttpStatus.OK)
-    public List<LocationDto> getAllLocations() {
-        return this.locationService.getAllLocations();
+    public List<LocationDto> getAllLocations(@PathVariable String cityName) {
+        return this.locationService.getAllLocations(cityName);
     }
 
     @GetMapping("name/{city}/{country}")

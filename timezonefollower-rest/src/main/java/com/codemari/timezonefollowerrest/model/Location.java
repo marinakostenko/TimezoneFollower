@@ -38,6 +38,9 @@ public class Location {
     @Column
     private Double longitude;
 
+    @Column
+    private Integer population;
+
     @OneToMany(mappedBy = "location")
     private List<AppUser> users;
 }
