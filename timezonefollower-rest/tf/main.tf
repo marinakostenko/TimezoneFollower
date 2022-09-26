@@ -12,3 +12,13 @@ terraform {
 provider "aws" {
   region = "us-west-1"
 }
+
+variable "timezone_follower_rds_cluster_username" {
+  type = string
+  sensitive = true
+}
+
+variable "timezone_follower_rds_cluster_password" {
+  type = string
+  sensitive = true
+}

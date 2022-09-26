@@ -1,6 +1,7 @@
 resource "aws_ecr_repository" "timezone_follower_repo" {
   name                 = "timezone_follower"
   image_tag_mutability = "MUTABLE"
+  force_delete = true
 
   image_scanning_configuration {
     scan_on_push = true
