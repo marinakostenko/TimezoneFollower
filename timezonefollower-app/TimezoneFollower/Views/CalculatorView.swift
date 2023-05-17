@@ -19,8 +19,7 @@ struct CalculatorView: View {
                     }.onChange(of: selectedCity, perform: { (value) in
                         print(value)
                         print(time)
-                        self.time = selectedCity.getCityCurrentDateTime()
-                        //time.addingTimeInterval(selectedCity.getCityCurrentDateTime().distance(to: time))
+                        self.time = selectedCity.getCityCurrentDateTime(date: Date.now)
                         print(self.time)
                     })
 

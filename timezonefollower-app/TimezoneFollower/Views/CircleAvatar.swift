@@ -11,7 +11,7 @@ struct CircleAvatar: View {
             .clipShape(Circle())
             .scaledToFit()
             .frame(width: size, height: size)
-            .overlay(Circle().stroke(.yellow, lineWidth: size * 0.05))
+            .overlay(Circle().stroke(.gray, lineWidth: size * 0.05))
     }
 }
 
