@@ -4,6 +4,7 @@ struct CalculatorView: View {
     
     @State var selectedCity = cities[0]
     @State var time = Date.now
+    @State var selectedTimeZone = TimeZone.current
 
     var body: some View {
         NavigationView {
@@ -20,6 +21,7 @@ struct CalculatorView: View {
                         print(value)
                         print(time)
                         self.time = selectedCity.getCityCurrentDateTime(date: Date.now)
+                        self.selectedTimeZone = TimeZone(identifier: selectedCity.timeZone)!
                         print(self.time)
                     })
 
@@ -35,7 +37,7 @@ struct CalculatorView: View {
                         .clipped()
                     
                     Text("Your time").font(.title.bold())
-                    Text(user.userDateTime(d: time))
+                    Text(user.convertSelectedDateTime(date: time, selectedTimeZone: selectedTimeZone).description(with: .current))
                     
                 }
                 .padding()

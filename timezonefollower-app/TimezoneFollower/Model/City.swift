@@ -11,7 +11,6 @@ struct City: Hashable, Codable {
         Image(imageName)
     }
     
-    
     func cityDate(d: Date) -> String {
         var f = Date.FormatStyle()
             .year()

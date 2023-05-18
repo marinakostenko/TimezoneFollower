@@ -23,5 +23,12 @@ struct User: Hashable, Codable {
         
         return d.formatted(f)
     }
+    
+    func convertSelectedDateTime(date: Date, selectedTimeZone: TimeZone) -> Date {
+        let selectedOffset = TimeInterval(selectedTimeZone.secondsFromGMT(for: date))
+        let currentOffeset = TimeInterval(TimeZone(identifier: timeZone)!.secondsFromGMT(for: date))
+
+        return date.addingTimeInterval(currentOffeset - selectedOffset)
+    }
 }
 
